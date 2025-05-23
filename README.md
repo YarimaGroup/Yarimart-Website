@@ -1,94 +1,101 @@
-Yarimart-Website
-Yarimart-Website is a web application developed by YarimaGroup, designed as a modern e-commerce platform. This repository contains the source code for the Yarimart website, built primarily using TypeScript and leveraging modern front-end tooling for an efficient development experience.
+# Yarimart-Website
 
-Table of Contents
-Features
+Yarimart-Website is an open-source web application developed by YarimaGroup. This repository contains the codebase for the Yarimart e-commerce platform, designed to provide a modern, scalable, and customizable online store experience.
 
-Tech Stack
+---
 
-Getting Started
+## Table of Contents
 
-Installation
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-Usage
+---
 
-Project Structure
+## About
 
-Contributing
+Yarimart-Website is intended as a foundational e-commerce website that can be adapted for various business needs. The project aims to deliver a fast, responsive, and user-friendly online shopping experience. It is built with modern JavaScript tooling and follows best practices for web development.
 
-License
+---
 
-Contact
+## Features
 
-Features
-Responsive e-commerce storefront
+- Modern, responsive design
+- Built with TypeScript for type safety and maintainability
+- Utilizes Tailwind CSS for flexible and efficient styling
+- Fast development workflow using Vite
+- Easily customizable and extendable codebase
 
-Modern UI built with Tailwind CSS
+---
 
-Fast development with Vite
+## Tech Stack
 
-TypeScript support for type safety
+- **Frontend Framework:** React (with TypeScript)
+- **Styling:** Tailwind CSS
+- **Build Tool:** Vite
+- **Linting:** ESLint
+- **Package Management:** npm
 
-Modular and scalable codebase
+---
 
-Tech Stack
-Frontend: TypeScript, React (presumed from standard modern stack), Tailwind CSS
+## Getting Started
 
-Build Tool: Vite
+Follow these steps to set up the project locally:
 
-Other Tools: PostCSS, ESLint
-
-Getting Started
-Follow these instructions to get a local copy of the project up and running for development and testing purposes.
-
-Installation
-Clone the repository:
-
-bash
+1. **Clone the repository**
 git clone https://github.com/YarimaGroup/Yarimart-Website.git
 cd Yarimart-Website
-Install dependencies:
 
-bash
+2. **Install dependencies**
 npm install
-Start the development server:
 
-bash
+4. **Run the development server**
 npm run dev
-Open your browser:
 
-Visit http://localhost:5173 (default Vite port) to view the application.
+4. **Build for production**
+npm run build
 
-Usage
-Modify the source code in the src/ directory to customize the website.
+5. **Preview the production build**
+npm run preview
 
-Static assets can be placed in the public/ directory.
+---
 
-Configuration files for tools like Tailwind (tailwind.config.js) and PostCSS (postcss.config.js) are available at the project root.
+## Folder Structure
 
-Project Structure
-text
-Yarimart-Website/
-├── .bolt/
-├── public/
-├── src/
-├── .gitignore
-├── README.md
-├── eslint.config.js
-├── index.html
-├── package.json
-├── package-lock.json
-├── postcss.config.js
-├── tailwind.config.js
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-├── vite.config.ts
-Contributing
-Contributions are welcome! Please open an issue or submit a pull request for suggestions or improvements.
+- `/public` — Static assets
+- `/src` — Source code (components, pages, utilities, etc.)
+- `.bolt` — Configuration or environment files
+- `index.html` — Main HTML entry point
+- `package.json` — Project metadata and dependencies
+- `tailwind.config.js` — Tailwind CSS configuration
+- `vite.config.ts` — Vite configuration
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
 
-Contact
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request to help improve the project. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Contact
+
 For questions or support, please open an issue in this repository.
+
+---
+
+*This README was last updated on May 23, 2025.*
+
+> _A well-crafted README helps others understand, use, and contribute to your project. For more tips, see GitHub's README guidelines and community templates_.
+
