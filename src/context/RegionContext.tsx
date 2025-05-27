@@ -2,28 +2,39 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Region, Currency } from '../types/product';
 
 const defaultCurrency: Currency = {
-  code: 'USD',
-  symbol: '$',
+  code: 'INR',
+  symbol: '₹',
   rate: 1,
-  name: 'US Dollar'
+  name: 'Indian Rupee'
 };
 
 const defaultRegion: Region = {
-  code: 'US',
-  name: 'United States',
+  code: 'IN',
+  name: 'India',
   currency: defaultCurrency,
-  flag: '🇺🇸'
+  flag: '🇮🇳'
 };
 
 const regions: Region[] = [
   defaultRegion,
+  {
+    code: 'US',
+    name: 'United States',
+    currency: {
+      code: 'USD',
+      symbol: '$',
+      rate: 0.012,
+      name: 'US Dollar'
+    },
+    flag: '🇺🇸'
+  },
   {
     code: 'EU',
     name: 'European Union',
     currency: {
       code: 'EUR',
       symbol: '€',
-      rate: 0.92,
+      rate: 0.011,
       name: 'Euro'
     },
     flag: '🇪🇺'
@@ -34,7 +45,7 @@ const regions: Region[] = [
     currency: {
       code: 'GBP',
       symbol: '£',
-      rate: 0.79,
+      rate: 0.0095,
       name: 'British Pound'
     },
     flag: '🇬🇧'
@@ -45,21 +56,10 @@ const regions: Region[] = [
     currency: {
       code: 'JPY',
       symbol: '¥',
-      rate: 148.50,
+      rate: 1.78,
       name: 'Japanese Yen'
     },
     flag: '🇯🇵'
-  },
-  {
-    code: 'IN',
-    name: 'India',
-    currency: {
-      code: 'INR',
-      symbol: '₹',
-      rate: 83.25,
-      name: 'Indian Rupee'
-    },
-    flag: '🇮🇳'
   }
 ];
 
@@ -68,6 +68,7 @@ interface RegionContextType {
   setCurrentRegion: (region: Region) => void;
   regions: Region[];
   formatPrice: (price: number) => string;
+  convertPrice: (price: number) => number;
 }
 
 const RegionContext = createContext<RegionContextType | undefined>(undefined);
@@ -87,8 +88,12 @@ interface RegionProviderProps {
 export const RegionProvider: React.FC<RegionProviderProps> = ({ children }) => {
   const [currentRegion, setCurrentRegion] = useState<Region>(defaultRegion);
 
+  const convertPrice = (price: number): number => {
+    return price * currentRegion.currency.rate;
+  };
+
   const formatPrice = (price: number): string => {
-    const convertedPrice = price * currentRegion.currency.rate;
+    const convertedPrice = convertPrice(price);
     return new Intl.NumberFormat(currentRegion.code, {
       style: 'currency',
       currency: currentRegion.currency.code
@@ -101,7 +106,8 @@ export const RegionProvider: React.FC<RegionProviderProps> = ({ children }) => {
         currentRegion,
         setCurrentRegion,
         regions,
-        formatPrice
+        formatPrice,
+        convertPrice
       }}
     >
       {children}

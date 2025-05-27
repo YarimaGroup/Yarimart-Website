@@ -5,18 +5,20 @@ import ProductCard from '../components/shared/ProductCard';
 import { getProducts } from '../utils/productUtils';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 import { Product } from '../types/product';
+import { useRegion } from '../context/RegionContext';
 
 const CatalogPage: React.FC = () => {
   const { category } = useParams<{ category?: string }>();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search');
+  const { convertPrice } = useRegion();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
   // Filter states
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('newest');
@@ -52,7 +54,8 @@ const CatalogPage: React.FC = () => {
       const finalPrice = product.discount > 0 
         ? product.price * (1 - product.discount / 100) 
         : product.price;
-      return finalPrice >= priceRange[0] && finalPrice <= priceRange[1];
+      const convertedPrice = convertPrice(finalPrice);
+      return convertedPrice >= priceRange[0] && convertedPrice <= priceRange[1];
     });
     
     // Color filter
@@ -71,15 +74,15 @@ const CatalogPage: React.FC = () => {
     switch (sortBy) {
       case 'price-low-high':
         filtered.sort((a, b) => {
-          const priceA = a.discount > 0 ? a.price * (1 - a.discount / 100) : a.price;
-          const priceB = b.discount > 0 ? b.price * (1 - b.discount / 100) : b.price;
+          const priceA = convertPrice(a.discount > 0 ? a.price * (1 - a.discount / 100) : a.price);
+          const priceB = convertPrice(b.discount > 0 ? b.price * (1 - b.discount / 100) : b.price);
           return priceA - priceB;
         });
         break;
       case 'price-high-low':
         filtered.sort((a, b) => {
-          const priceA = a.discount > 0 ? a.price * (1 - a.discount / 100) : a.price;
-          const priceB = b.discount > 0 ? b.price * (1 - b.discount / 100) : b.price;
+          const priceA = convertPrice(a.discount > 0 ? a.price * (1 - a.discount / 100) : a.price);
+          const priceB = convertPrice(b.discount > 0 ? b.price * (1 - b.discount / 100) : b.price);
           return priceB - priceA;
         });
         break;
@@ -91,7 +94,7 @@ const CatalogPage: React.FC = () => {
     }
     
     setFilteredProducts(filtered);
-  }, [products, priceRange, selectedColors, selectedSizes, sortBy]);
+  }, [products, priceRange, selectedColors, selectedSizes, sortBy, convertPrice]);
 
   const toggleFilterMenu = () => {
     setIsFilterMenuOpen(!isFilterMenuOpen);
@@ -114,7 +117,7 @@ const CatalogPage: React.FC = () => {
   };
 
   const resetFilters = () => {
-    setPriceRange([0, 500]);
+    setPriceRange([0, 100000]);
     setSelectedColors([]);
     setSelectedSizes([]);
     setSortBy('newest');
@@ -175,13 +178,13 @@ const CatalogPage: React.FC = () => {
               <h3 className="font-medium mb-3">Price Range</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-gray-500">
-                  <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}</span>
+                  <span>₹{priceRange[0]}</span>
+                  <span>₹{priceRange[1]}</span>
                 </div>
                 <input
                   type="range"
                   min="0"
-                  max="500"
+                  max="100000"
                   value={priceRange[1]}
                   onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
                   className="w-full"
@@ -257,13 +260,13 @@ const CatalogPage: React.FC = () => {
                 <h3 className="font-medium mb-3">Price Range</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm text-gray-500">
-                    <span>${priceRange[0]}</span>
-                    <span>${priceRange[1]}</span>
+                    <span>₹{priceRange[0]}</span>
+                    <span>₹{priceRange[1]}</span>
                   </div>
                   <input
                     type="range"
                     min="0"
-                    max="500"
+                    max="100000"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
                     className="w-full"
@@ -355,6 +358,7 @@ const CatalogPage: React.FC = () => {
                   key={color} 
                   className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800"
                 >
+                
                   {color}
                   <button 
                     onClick={() => toggleColor(color)}
