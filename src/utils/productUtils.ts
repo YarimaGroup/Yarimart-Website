@@ -376,8 +376,7 @@ export const getProductsByCategory = (category: string): Product[] => {
   }
 
   return products
-    .filter(product => product.category.toLowerCase() === category.toLowerCase())
-    .slice(0, 4);
+    .filter(product => product.category.toLowerCase() === category.toLowerCase());
 };
 
 export const getRelatedProducts = (productId: string, category: string): Product[] => {
