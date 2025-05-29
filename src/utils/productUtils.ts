@@ -375,8 +375,12 @@ export const getProductsByCategory = (category: string): Product[] => {
       .slice(0, 4);
   }
 
-  return products
-    .filter(product => product.category.toLowerCase() === category.toLowerCase());
+  // Convert category to lowercase and replace hyphens with spaces for comparison
+  const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
+  
+  return products.filter(product => 
+    product.category.toLowerCase() === normalizedCategory
+  );
 };
 
 export const getRelatedProducts = (productId: string, category: string): Product[] => {
