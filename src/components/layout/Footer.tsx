@@ -15,8 +15,11 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex items-center space-x-4 text-gray-300">
               <Phone size={20} className="flex-shrink-0" />
-              <span className="text-sm">24/7 Support: +917594888505,
-                +917594888504 </span>
+              <div className="text-sm">
+                <p>24/7 Support:</p>
+                <p>+917594888505</p>
+                <p>+917594888504</p>
+              </div>
             </div>
             <div className="flex items-center space-x-4 text-gray-300">
               <MapPin size={20} className="flex-shrink-0" />
@@ -136,10 +139,8 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-700">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="text-sm text-gray-400">
-              <p>&copy; {new Date().getFullYear()} Yarimart. All rights reserved.</p>
-            </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-400">&copy; {new Date().getFullYear()} Yarimart. All rights reserved.</p>
           </div>
         </div>
       </div>

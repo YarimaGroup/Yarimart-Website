@@ -33,10 +33,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link 
       to={`/product/${product.id}`} 
-      className="group block"
+      className="group block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
     >
-      <div className="relative bg-gray-100 mb-4">
-        <div className="w-full aspect-square relative overflow-hidden rounded-lg">
+      <div className="relative">
+        <div className="w-full aspect-square relative overflow-hidden rounded-t-lg">
           {product.discount > 0 && (
             <span className="absolute top-2 left-2 bg-accent-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
               {product.discount}% OFF
@@ -52,7 +52,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Heart className={isWishlisted ? 'fill-accent-500' : ''} size={20} />
           </button>
           
-          {/* Image container with proper aspect ratio */}
           <div className="w-full h-full relative">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-gray-200 animate-pulse" />
@@ -68,7 +67,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             />
           </div>
 
-          {/* Hover overlay */}
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/50 to-transparent pt-10 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={handleAddToCart}
@@ -80,32 +78,34 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition line-clamp-2 min-h-[2.5rem]">
-        {product.name}
-      </h3>
-      
-      <div className="mt-1 flex items-center">
-        {product.discount > 0 ? (
-          <>
-            <span className="text-accent-600 font-medium">
-              {formatPrice(product.price * (1 - product.discount / 100))}
-            </span>
-            <span className="ml-2 text-gray-500 text-sm line-through">
+      <div className="p-4">
+        <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition line-clamp-2 min-h-[2.5rem]">
+          {product.name}
+        </h3>
+        
+        <div className="mt-2 flex items-center">
+          {product.discount > 0 ? (
+            <>
+              <span className="text-accent-600 font-medium">
+                {formatPrice(product.price * (1 - product.discount / 100))}
+              </span>
+              <span className="ml-2 text-gray-500 text-sm line-through">
+                {formatPrice(product.price)}
+              </span>
+            </>
+          ) : (
+            <span className="text-gray-900 font-medium">
               {formatPrice(product.price)}
             </span>
-          </>
-        ) : (
-          <span className="text-gray-900 font-medium">
-            {formatPrice(product.price)}
-          </span>
+          )}
+        </div>
+        
+        {product.stock < 10 && (
+          <p className="text-sm text-accent-600 mt-2">
+            Only {product.stock} left in stock
+          </p>
         )}
       </div>
-      
-      {product.stock < 10 && (
-        <p className="text-sm text-accent-600 mt-1">
-          Only {product.stock} left in stock
-        </p>
-      )}
     </Link>
   );
 };
