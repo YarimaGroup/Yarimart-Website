@@ -22,39 +22,42 @@ import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
 import { RegionProvider } from './context/RegionContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <RegionProvider>
-          <Router>
-            <CartProvider>
-              <WishlistProvider>
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/catalog/:category?" element={<CatalogPage />} />
-                    <Route path="/product/:id" element={<ProductPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route path="/order-success" element={<OrderSuccessPage />} />
-                    <Route path="/auth" element={<AuthPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/profile/orders" element={<OrdersPage />} />
-                    <Route path="/order/:id" element={<OrderDetailsPage />} />
-                    <Route path="/wishlist" element={<WishlistPage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/locations" element={<LocationsPage />} />
-                    <Route path="/careers" element={<CareersPage />} />
-                    <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                    <Route path="/terms" element={<TermsPage />} />
-                  </Routes>
-                </Layout>
-              </WishlistProvider>
-            </CartProvider>
-          </Router>
-        </RegionProvider>
+        <LanguageProvider>
+          <RegionProvider>
+            <Router>
+              <CartProvider>
+                <WishlistProvider>
+                  <Layout>
+                    <Routes>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/catalog/:category?" element={<CatalogPage />} />
+                      <Route path="/product/:id" element={<ProductPage />} />
+                      <Route path="/cart" element={<CartPage />} />
+                      <Route path="/checkout" element={<CheckoutPage />} />
+                      <Route path="/order-success" element={<OrderSuccessPage />} />
+                      <Route path="/auth" element={<AuthPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/profile/orders" element={<OrdersPage />} />
+                      <Route path="/order/:id" element={<OrderDetailsPage />} />
+                      <Route path="/wishlist" element={<WishlistPage />} />
+                      <Route path="/about" element={<AboutPage />} />
+                      <Route path="/locations" element={<LocationsPage />} />
+                      <Route path="/careers" element={<CareersPage />} />
+                      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                      <Route path="/terms" element={<TermsPage />} />
+                    </Routes>
+                  </Layout>
+                </WishlistProvider>
+              </CartProvider>
+            </Router>
+          </RegionProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </AuthProvider>
   );

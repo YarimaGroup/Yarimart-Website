@@ -5,8 +5,11 @@ import Hero from '../components/home/Hero';
 import FeaturedProducts from '../components/home/FeaturedProducts';
 import CategoryPreview from '../components/home/CategoryPreview';
 import Newsletter from '../components/shared/Newsletter';
+import { useLanguage } from '../context/LanguageContext';
 
 const HomePage: React.FC = () => {
+  const { t } = useLanguage();
+  
   const categories = [
     {
       id: 'power-tools',
@@ -34,23 +37,23 @@ const HomePage: React.FC = () => {
   const features = [
     {
       icon: Tool,
-      title: 'Equipment Rental',
-      description: 'Rent professional-grade tools and equipment for your projects',
+      title: t('home.services.rental'),
+      description: t('home.services.rentalDesc'),
     },
     {
       icon: Wrench,
-      title: 'Repair Services',
-      description: 'Expert repair and maintenance for all types of tools',
+      title: t('home.services.repair'),
+      description: t('home.services.repairDesc'),
     },
     {
       icon: Truck,
-      title: 'Bulk Orders',
-      description: 'Special pricing and delivery for large quantity orders',
+      title: t('home.services.bulk'),
+      description: t('home.services.bulkDesc'),
     },
     {
       icon: Clock,
-      title: '24/7 Support',
-      description: 'Round-the-clock technical support and assistance',
+      title: t('home.services.support'),
+      description: t('home.services.supportDesc'),
     },
   ];
 
@@ -61,12 +64,12 @@ const HomePage: React.FC = () => {
       {/* New Arrivals */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">New Arrivals</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">{t('home.sections.newArrivals')}</h2>
           <Link
             to="/catalog/new"
             className="flex items-center text-primary-600 hover:text-primary-700 transition"
           >
-            View All <ArrowRight className="ml-1 h-4 w-4" />
+            {t('home.sections.viewAll')} <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
         <FeaturedProducts category="new" />
@@ -74,7 +77,7 @@ const HomePage: React.FC = () => {
 
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8">Shop by Category</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-8">{t('home.sections.categories')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((category) => (
             <CategoryPreview key={category.id} category={category} />
@@ -83,11 +86,11 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Features */}
-      <section className="bg-gray-50 py-16">
+      <section className="bg-gray-50 py-16 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">{t('home.sections.services')}</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto dark:text-gray-300">
               Complete solutions for your industrial and professional needs
             </p>
           </div>
@@ -97,16 +100,16 @@ const HomePage: React.FC = () => {
               return (
                 <div
                   key={feature.title}
-                  className="bg-white p-6 rounded-lg shadow-sm group"
+                  className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm group"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4 group-hover:bg-primary-100 transition">
-                      <IconComponent className="w-8 h-8 text-primary-600" />
+                    <div className="w-16 h-16 bg-primary-50 dark:bg-primary-900 rounded-full flex items-center justify-center mb-4 group-hover:bg-primary-100 dark:group-hover:bg-primary-800 transition">
+                      <IconComponent className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2 group-hover:text-primary-600 transition">
+                    <h3 className="text-lg font-semibold mb-2 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400 transition">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-sm dark:text-gray-300">
                       {feature.description}
                     </p>
                   </div>
@@ -120,29 +123,29 @@ const HomePage: React.FC = () => {
       {/* Featured Collection */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">Featured Products</h2>
+          <h2 className="text-2xl md:text-3xl font-bold">{t('home.sections.featured')}</h2>
           <Link
             to="/catalog/featured"
             className="flex items-center text-primary-600 hover:text-primary-700 transition"
           >
-            View All <ArrowRight className="ml-1 h-4 w-4" />
+            {t('home.sections.viewAll')} <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
         <FeaturedProducts category="featured" />
       </section>
 
       {/* Special Offers */}
-      <section className="bg-accent-50 py-16">
+      <section className="bg-accent-50 py-16 dark:bg-accent-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-8 md:mb-0">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Professional Tools Sale</h2>
-              <p className="text-lg mb-6">Save up to 40% on professional-grade power tools and equipment. Limited time offer.</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">{t('home.sections.sale')}</h2>
+              <p className="text-lg mb-6 dark:text-gray-300">{t('home.sections.saleDescription')}</p>
               <Link
                 to="/catalog/sale"
                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 transition"
               >
-                Shop Now
+                {t('home.sections.shopNow')}
               </Link>
             </div>
             <div className="md:w-1/2">

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, LogOut, Package, MapPin, Phone, Moon, Sun } from 'lucide-react';
+import { User, Settings, LogOut, Package, MapPin, Phone, Moon, Sun, Globe } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
+import LanguageSelector from '../components/shared/LanguageSelector';
 
 const ProfilePage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,7 +59,7 @@ const ProfilePage: React.FC = () => {
             className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
           >
             <LogOut className="w-5 h-5 mr-2" />
-            Sign Out
+            {t('common.signOut')}
           </button>
         </div>
 
@@ -64,7 +67,7 @@ const ProfilePage: React.FC = () => {
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center text-gray-600 dark:text-gray-300 mb-2">
               <Package className="w-5 h-5 mr-2" />
-              <h3 className="font-medium">Orders</h3>
+              <h3 className="font-medium">{t('profile.orders')}</h3>
             </div>
             <p className="text-2xl font-bold dark:text-white">0</p>
             <button
@@ -78,7 +81,7 @@ const ProfilePage: React.FC = () => {
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center text-gray-600 dark:text-gray-300 mb-2">
               <MapPin className="w-5 h-5 mr-2" />
-              <h3 className="font-medium">Shipping Address</h3>
+              <h3 className="font-medium">{t('profile.address')}</h3>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-300">
               {formData.addressLine1 ? `${formData.addressLine1}, ${formData.city}` : 'Not set'}
@@ -88,7 +91,7 @@ const ProfilePage: React.FC = () => {
           <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
             <div className="flex items-center text-gray-600 dark:text-gray-300 mb-2">
               <Phone className="w-5 h-5 mr-2" />
-              <h3 className="font-medium">Contact</h3>
+              <h3 className="font-medium">{t('profile.contact')}</h3>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-300">
               {formData.phone || 'Not set'}
@@ -96,8 +99,9 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Dark Mode Toggle */}
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mb-6">
+        {/* Settings */}
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mb-6 space-y-4">
+          {/* Dark Mode Toggle */}
           <div className="flex items-center justify-between">
             <div className="flex items-center text-gray-700 dark:text-gray-300">
               {isDarkMode ? (
@@ -105,7 +109,7 @@ const ProfilePage: React.FC = () => {
               ) : (
                 <Sun className="w-5 h-5 mr-2" />
               )}
-              <span className="font-medium">Dark Mode</span>
+              <span className="font-medium">{t('profile.darkMode')}</span>
             </div>
             <button
               onClick={toggleDarkMode}
@@ -123,13 +127,24 @@ const ProfilePage: React.FC = () => {
               />
             </button>
           </div>
+
+          {/* Language Selection */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-gray-700 dark:text-gray-300">
+              <Globe className="w-5 h-5 mr-2" />
+              <span className="font-medium">{t('common.language')}</span>
+            </div>
+            <div className="w-36">
+              <LanguageSelector />
+            </div>
+          </div>
         </div>
 
         <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold flex items-center dark:text-white">
               <Settings className="w-5 h-5 mr-2" />
-              Profile Settings
+              {t('profile.settings')}
             </h2>
             <button
               onClick={() => setIsEditing(!isEditing)}
@@ -181,7 +196,7 @@ const ProfilePage: React.FC = () => {
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <h3 className="text-lg font-medium mb-4 dark:text-white">Shipping Address</h3>
+                <h3 className="text-lg font-medium mb-4 dark:text-white">{t('profile.address')}</h3>
                 
                 {isEditing ? (
                   <div className="grid grid-cols-1 gap-6">

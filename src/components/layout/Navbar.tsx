@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Heart, Menu, X, User, Package } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, User, Package, Globe } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageSelector from '../shared/LanguageSelector';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { cart } = useCart();
   const { user, signOut } = useAuth();
   const { isDarkMode } = useTheme();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -64,7 +68,7 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search products..."
+                  placeholder={t('common.search')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full md:w-64 pl-3 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition dark:bg-gray-700 dark:text-white"
@@ -79,6 +83,20 @@ const Navbar: React.FC = () => {
             </form>
 
             <div className="hidden md:flex items-center space-x-4">
+              <div className="relative">
+                <button
+                  onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition flex items-center"
+                >
+                  <Globe className="h-5 w-5" />
+                </button>
+                {isLanguageMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                    <LanguageSelector />
+                  </div>
+                )}
+              </div>
+              
               {user ? (
                 <div className="relative">
                   <button
@@ -94,7 +112,7 @@ const Navbar: React.FC = () => {
                         className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
-                        Profile Settings
+                        {t('profile.settings')}
                       </Link>
                       <Link
                         to="/profile/orders"
@@ -103,14 +121,14 @@ const Navbar: React.FC = () => {
                       >
                         <div className="flex items-center">
                           <Package className="h-4 w-4 mr-2" />
-                          My Orders
+                          {t('profile.orders')}
                         </div>
                       </Link>
                       <button
                         onClick={handleSignOut}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
-                        Sign out
+                        {t('common.signOut')}
                       </button>
                     </div>
                   )}
@@ -142,6 +160,13 @@ const Navbar: React.FC = () => {
             </div>
 
             <div className="flex md:hidden items-center space-x-4">
+              <button 
+                onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition"
+              >
+                <Globe className="h-5 w-5" />
+              </button>
+              
               <Link
                 to="/cart"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition relative"
@@ -169,6 +194,15 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
+      {isLanguageMenuOpen && (
+        <div className="fixed inset-0 z-20 md:hidden" onClick={() => setIsLanguageMenuOpen(false)}>
+          <div className="absolute top-16 inset-x-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-medium mb-2 dark:text-white">{t('common.language')}</h3>
+            <LanguageSelector />
+          </div>
+        </div>
+      )}
+
       {isMenuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-800 shadow-lg">
           <div className="px-4 pt-2 pb-3 space-y-1">
@@ -176,7 +210,7 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search products..."
+                  placeholder={t('common.search')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-3 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition dark:bg-gray-700 dark:text-white"
@@ -214,7 +248,7 @@ const Navbar: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <User className="h-5 w-5 mr-2" />
-                    Profile Settings
+                    {t('profile.settings')}
                   </Link>
                   <Link
                     to="/profile/orders"
@@ -222,7 +256,7 @@ const Navbar: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <Package className="h-5 w-5 mr-2" />
-                    My Orders
+                    {t('profile.orders')}
                   </Link>
                   <button
                     onClick={() => {
@@ -231,7 +265,7 @@ const Navbar: React.FC = () => {
                     }}
                     className="flex items-center w-full px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    Sign out
+                    {t('common.signOut')}
                   </button>
                 </>
               ) : (
@@ -241,7 +275,7 @@ const Navbar: React.FC = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User className="h-5 w-5 mr-2" />
-                  Sign in
+                  {t('common.signIn')}
                 </Link>
               )}
 
@@ -251,7 +285,7 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Heart className="h-5 w-5 mr-2" />
-                Wishlist
+                {t('common.wishlist')}
               </Link>
             </div>
           </div>

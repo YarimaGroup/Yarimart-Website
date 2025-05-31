@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-gray-900 text-white dark:bg-gray-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -16,14 +20,14 @@ const Footer: React.FC = () => {
             <div className="flex items-center space-x-4 text-gray-300">
               <Phone size={20} className="flex-shrink-0" />
               <div className="text-sm">
-                <p>24/7 Support:</p>
+                <p>{t('footer.support')}:</p>
                 <p>+917594888505</p>
                 <p>+917594888504</p>
               </div>
             </div>
             <div className="flex items-center space-x-4 text-gray-300">
               <MapPin size={20} className="flex-shrink-0" />
-              <span className="text-sm">Global Headquarters: Industrial District, Tech Park</span>
+              <span className="text-sm">{t('footer.address')}</span>
             </div>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white transition">
@@ -43,7 +47,7 @@ const Footer: React.FC = () => {
 
           {/* Products */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Products</h3>
+            <h3 className="text-lg font-medium mb-4">{t('footer.products')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/catalog/power-tools" className="text-gray-300 hover:text-white transition text-sm">
@@ -75,7 +79,7 @@ const Footer: React.FC = () => {
 
           {/* Services */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Services</h3>
+            <h3 className="text-lg font-medium mb-4">{t('footer.services')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/equipment-rental" className="text-gray-300 hover:text-white transition text-sm">
@@ -107,7 +111,7 @@ const Footer: React.FC = () => {
 
           {/* Company */}
           <div>
-            <h3 className="text-lg font-medium mb-4">Company</h3>
+            <h3 className="text-lg font-medium mb-4">{t('footer.company')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-gray-300 hover:text-white transition text-sm">
@@ -140,7 +144,7 @@ const Footer: React.FC = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-700">
           <div className="text-center">
-            <p className="text-sm text-gray-400">&copy; {new Date().getFullYear()} Yarimart. All rights reserved.</p>
+            <p className="text-sm text-gray-400">{t('footer.copyright').replace('{year}', currentYear.toString())}</p>
           </div>
         </div>
       </div>
