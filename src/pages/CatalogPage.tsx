@@ -19,8 +19,6 @@ const CatalogPage: React.FC = () => {
 
   // Filter states
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
@@ -63,18 +61,6 @@ const CatalogPage: React.FC = () => {
       return convertedPrice >= priceRange[0] && convertedPrice <= priceRange[1];
     });
     
-    // Color filter
-    if (selectedColors.length > 0) {
-      filtered = filtered.filter(product => 
-        product.colors?.some(color => selectedColors.includes(color)));
-    }
-    
-    // Size filter
-    if (selectedSizes.length > 0) {
-      filtered = filtered.filter(product => 
-        product.sizes?.some(size => selectedSizes.includes(size)));
-    }
-    
     // Sorting
     switch (sortBy) {
       case 'price-low-high':
@@ -99,43 +85,16 @@ const CatalogPage: React.FC = () => {
     }
     
     return filtered;
-  }, [products, priceRange, selectedColors, selectedSizes, sortBy, convertPrice]);
+  }, [products, priceRange, sortBy, convertPrice]);
 
   const toggleFilterMenu = useCallback(() => {
     setIsFilterMenuOpen(prev => !prev);
   }, []);
 
-  const toggleColor = useCallback((color: string) => {
-    setSelectedColors(prev => 
-      prev.includes(color) 
-        ? prev.filter(c => c !== color) 
-        : [...prev, color]
-    );
-  }, []);
-
-  const toggleSize = useCallback((size: string) => {
-    setSelectedSizes(prev => 
-      prev.includes(size) 
-        ? prev.filter(s => s !== size) 
-        : [...prev, size]
-    );
-  }, []);
-
   const resetFilters = useCallback(() => {
     setPriceRange([0, 100000]);
-    setSelectedColors([]);
-    setSelectedSizes([]);
     setSortBy('newest');
   }, []);
-
-  // Get all unique colors and sizes for filters
-  const availableColors = useMemo(() => Array.from(new Set(
-    products.flatMap(product => product.colors || [])
-  )).sort(), [products]);
-
-  const availableSizes = useMemo(() => Array.from(new Set(
-    products.flatMap(product => product.sizes || [])
-  )).sort(), [products]);
 
   if (isLoading) {
     return (
@@ -215,46 +174,6 @@ const CatalogPage: React.FC = () => {
                 />
               </div>
             </div>
-
-            {/* Colors */}
-            <div className="mb-6">
-              <h3 className="font-medium mb-3">Colors</h3>
-              <div className="flex flex-wrap gap-2">
-                {availableColors.map(color => (
-                  <button
-                    key={color}
-                    onClick={() => toggleColor(color)}
-                    className={`h-8 w-8 rounded-full border-2 ${
-                      selectedColors.includes(color) 
-                        ? 'border-primary-500' 
-                        : 'border-gray-200'
-                    }`}
-                    style={{ backgroundColor: color.toLowerCase() }}
-                    title={color}
-                  ></button>
-                ))}
-              </div>
-            </div>
-
-            {/* Sizes */}
-            <div className="mb-6">
-              <h3 className="font-medium mb-3">Sizes</h3>
-              <div className="flex flex-wrap gap-2">
-                {availableSizes.map(size => (
-                  <button
-                    key={size}
-                    onClick={() => toggleSize(size)}
-                    className={`h-8 px-3 flex items-center justify-center rounded-md border ${
-                      selectedSizes.includes(size)
-                        ? 'bg-primary-100 border-primary-500 text-primary-700'
-                        : 'border-gray-300 hover:border-gray-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 
@@ -298,46 +217,6 @@ const CatalogPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Colors */}
-              <div className="mb-6">
-                <h3 className="font-medium mb-3">Colors</h3>
-                <div className="flex flex-wrap gap-2">
-                  {availableColors.map(color => (
-                    <button
-                      key={color}
-                      onClick={() => toggleColor(color)}
-                      className={`h-8 w-8 rounded-full border-2 ${
-                        selectedColors.includes(color) 
-                          ? 'border-primary-500' 
-                          : 'border-gray-200'
-                      }`}
-                      style={{ backgroundColor: color.toLowerCase() }}
-                      title={color}
-                    ></button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sizes */}
-              <div className="mb-6">
-                <h3 className="font-medium mb-3">Sizes</h3>
-                <div className="flex flex-wrap gap-2">
-                  {availableSizes.map(size => (
-                    <button
-                      key={size}
-                      onClick={() => toggleSize(size)}
-                      className={`h-8 px-3 flex items-center justify-center rounded-md border ${
-                        selectedSizes.includes(size)
-                          ? 'bg-primary-100 border-primary-500 text-primary-700'
-                          : 'border-gray-300 hover:border-gray-400'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="mt-8 flex gap-4">
                 <button 
                   onClick={toggleFilterMenu}
@@ -373,48 +252,6 @@ const CatalogPage: React.FC = () => {
               </select>
             </div>
           </div>
-
-          {/* Active filters */}
-          {(selectedColors.length > 0 || selectedSizes.length > 0) && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {selectedColors.map(color => (
-                <span 
-                  key={color} 
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800"
-                >
-                  {color}
-                  <button 
-                    onClick={() => toggleColor(color)}
-                    className="ml-1 text-gray-500 hover:text-gray-700"
-                  >
-                    <X size={14} />
-                  </button>
-                </span>
-              ))}
-              
-              {selectedSizes.map(size => (
-                <span 
-                  key={size} 
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800"
-                >
-                  Size: {size}
-                  <button 
-                    onClick={() => toggleSize(size)}
-                    className="ml-1 text-gray-500 hover:text-gray-700"
-                  >
-                    <X size={14} />
-                  </button>
-                </span>
-              ))}
-              
-              <button 
-                onClick={resetFilters}
-                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary-100 text-primary-700 hover:bg-primary-200 transition"
-              >
-                Clear All
-              </button>
-            </div>
-          )}
 
           {/* Product grid */}
           {filteredProducts.length > 0 ? (
