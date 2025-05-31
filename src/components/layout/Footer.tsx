@@ -139,17 +139,8 @@ const Footer: React.FC = () => {
             <div className="text-sm text-gray-400">
               <p>&copy; {new Date().getFullYear()} Yarimart. All rights reserved.</p>
             </div>
-            <div className="flex items-center justify-start md:justify-end space-x-4">
-              <img 
-                src="https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg" 
-                alt="ISO Certified"
-                className="h-12 w-auto"
-              />
-              <img 
-                src="https://images.pexels.com/photos/6963098/pexels-photo-6963098.jpeg" 
-                alt="Safety Certified" 
-                className="h-12 w-auto"
-              />
+           
+           
             </div>
           </div>
         </div>
