@@ -64,10 +64,10 @@ const HomePage: React.FC = () => {
       {/* New Arrivals */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">{t('home.sections.newArrivals')}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold dark:text-white">{t('home.sections.newArrivals')}</h2>
           <Link
             to="/catalog/new"
-            className="flex items-center text-primary-600 hover:text-primary-700 transition"
+            className="flex items-center text-primary-600 hover:text-primary-700 transition dark:text-primary-400 dark:hover:text-primary-300"
           >
             {t('home.sections.viewAll')} <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
@@ -77,7 +77,7 @@ const HomePage: React.FC = () => {
 
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8">{t('home.sections.categories')}</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-8 dark:text-white">{t('home.sections.categories')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((category) => (
             <CategoryPreview key={category.id} category={category} />
@@ -123,10 +123,10 @@ const HomePage: React.FC = () => {
       {/* Featured Collection */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">{t('home.sections.featured')}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold dark:text-white">{t('home.sections.featured')}</h2>
           <Link
             to="/catalog/featured"
-            className="flex items-center text-primary-600 hover:text-primary-700 transition"
+            className="flex items-center text-primary-600 hover:text-primary-700 transition dark:text-primary-400 dark:hover:text-primary-300"
           >
             {t('home.sections.viewAll')} <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
@@ -143,7 +143,7 @@ const HomePage: React.FC = () => {
               <p className="text-lg mb-6 dark:text-gray-300">{t('home.sections.saleDescription')}</p>
               <Link
                 to="/catalog/sale"
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 transition"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 transition dark:bg-accent-700 dark:hover:bg-accent-600"
               >
                 {t('home.sections.shopNow')}
               </Link>
