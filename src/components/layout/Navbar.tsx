@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Heart, Menu, X, User } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, User, Package } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { cart } = useCart();
   const { user, signOut } = useAuth();
@@ -76,18 +77,40 @@ const Navbar: React.FC = () => {
             </form>
 
             {user ? (
-              <div className="relative group">
-                <button className="text-gray-700 hover:text-primary-600 transition">
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="text-gray-700 hover:text-primary-600 transition"
+                >
                   <User className="h-6 w-6" />
                 </button>
-                <div className="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-xl hidden group-hover:block">
-                  <button
-                    onClick={handleSignOut}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    Sign out
-                  </button>
-                </div>
+                {isProfileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      Profile Settings
+                    </Link>
+                    <Link
+                      to="/profile/orders"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      <div className="flex items-center">
+                        <Package className="h-4 w-4 mr-2" />
+                        My Orders
+                      </div>
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <Link

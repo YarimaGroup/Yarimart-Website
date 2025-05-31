@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut, Package, MapPin, Phone } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 
@@ -11,7 +11,11 @@ const ProfilePage: React.FC = () => {
   const [formData, setFormData] = useState({
     fullName: user?.user_metadata?.full_name || '',
     phone: user?.user_metadata?.phone || '',
-    address: user?.user_metadata?.address || ''
+    addressLine1: user?.user_metadata?.addressLine1 || '',
+    addressLine2: user?.user_metadata?.addressLine2 || '',
+    city: user?.user_metadata?.city || '',
+    state: user?.user_metadata?.state || '',
+    pincode: user?.user_metadata?.pincode || ''
   });
 
   const handleSignOut = async () => {
@@ -52,6 +56,42 @@ const ProfilePage: React.FC = () => {
             <LogOut className="w-5 h-5 mr-2" />
             Sign Out
           </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center text-gray-600 mb-2">
+              <Package className="w-5 h-5 mr-2" />
+              <h3 className="font-medium">Orders</h3>
+            </div>
+            <p className="text-2xl font-bold">0</p>
+            <button
+              onClick={() => navigate('/profile/orders')}
+              className="mt-2 text-primary-600 hover:text-primary-700 text-sm font-medium"
+            >
+              View Orders
+            </button>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center text-gray-600 mb-2">
+              <MapPin className="w-5 h-5 mr-2" />
+              <h3 className="font-medium">Shipping Address</h3>
+            </div>
+            <p className="text-sm text-gray-600">
+              {formData.addressLine1 ? `${formData.addressLine1}, ${formData.city}` : 'Not set'}
+            </p>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="flex items-center text-gray-600 mb-2">
+              <Phone className="w-5 h-5 mr-2" />
+              <h3 className="font-medium">Contact</h3>
+            </div>
+            <p className="text-sm text-gray-600">
+              {formData.phone || 'Not set'}
+            </p>
+          </div>
         </div>
 
         <div className="border-t pt-8">
@@ -109,19 +149,89 @@ const ProfilePage: React.FC = () => {
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Address
-                </label>
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-medium mb-4">Shipping Address</h3>
+                
                 {isEditing ? (
-                  <textarea
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    rows={3}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                  />
+                  <div className="grid grid-cols-1 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Address Line 1
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.addressLine1}
+                        onChange={(e) => setFormData({ ...formData, addressLine1: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        Address Line 2 (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.addressLine2}
+                        onChange={(e) => setFormData({ ...formData, addressLine2: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.city}
+                          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          State
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.state}
+                          onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">
+                        PIN Code
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.pincode}
+                        onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                        pattern="[0-9]{6}"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+                  </div>
                 ) : (
-                  <p className="mt-1 text-gray-900">{formData.address || 'Not set'}</p>
+                  <div className="space-y-2">
+                    <p className="text-gray-900">{formData.addressLine1 || 'Not set'}</p>
+                    {formData.addressLine2 && (
+                      <p className="text-gray-900">{formData.addressLine2}</p>
+                    )}
+                    {(formData.city || formData.state) && (
+                      <p className="text-gray-900">
+                        {[formData.city, formData.state].filter(Boolean).join(', ')}
+                      </p>
+                    )}
+                    {formData.pincode && (
+                      <p className="text-gray-900">PIN: {formData.pincode}</p>
+                    )}
+                  </div>
                 )}
               </div>
 
