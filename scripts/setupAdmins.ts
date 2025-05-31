@@ -8,6 +8,15 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 // Make sure we have the service role key for admin operations
 if (!supabaseServiceKey) {
   console.error('Error: SUPABASE_SERVICE_ROLE_KEY is required for this script.');
+  console.error('\nPlease follow these steps:');
+  console.error('1. Create a .env file in the root directory if it doesn\'t exist');
+  console.error('2. Add your Supabase service role key to the .env file:');
+  console.error('   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key');
+  console.error('\nYou can find your service role key in the Supabase dashboard:');
+  console.error('- Go to https://app.supabase.io');
+  console.error('- Select your project');
+  console.error('- Go to Project Settings > API');
+  console.error('- Copy the "service_role key" (NOT the anon key)');
   process.exit(1);
 }
 

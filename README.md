@@ -10,6 +10,7 @@ Yarimart-Website is an open-source web application developed by YarimaGroup. Thi
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
+- [Environment Setup](#environment-setup)
 - [Folder Structure](#folder-structure)
 - [Contributing](#contributing)
 - [License](#license)
@@ -40,6 +41,7 @@ Yarimart-Website is intended as a foundational e-commerce website that can be ad
 - **Build Tool:** Vite
 - **Linting:** ESLint
 - **Package Management:** npm
+- **Database:** Supabase
 
 ---
 
@@ -54,14 +56,33 @@ cd Yarimart-Website
 2. **Install dependencies**
 npm install
 
+3. **Set up environment variables**
+Copy the `.env.example` file to `.env` and fill in your Supabase credentials:
+```
+cp .env.example .env
+```
+Then edit the `.env` file with your Supabase URL, anon key, and service role key.
+
 4. **Run the development server**
 npm run dev
 
-4. **Build for production**
+5. **Build for production**
 npm run build
 
-5. **Preview the production build**
+6. **Preview the production build**
 npm run preview
+
+---
+
+## Environment Setup
+
+The application requires the following environment variables:
+
+- `VITE_SUPABASE_URL`: Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: Your Supabase anon/public key
+- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key (for admin operations)
+
+These can be found in your Supabase dashboard under Project Settings > API.
 
 ---
 
@@ -98,4 +119,3 @@ For questions or support, please open an issue in this repository.
 *This README was last updated on May 23, 2025.*
 
 > _A well-crafted README helps others understand, use, and contribute to your project. For more tips, see GitHub's README guidelines and community templates_.
-
