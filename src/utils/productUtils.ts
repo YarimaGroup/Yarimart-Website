@@ -57,131 +57,19 @@ const products: Product[] = [
     },
     rating: 4.6,
     reviews: 182,
-    createdAt: '2024-01-15',
+    createdAt: '2024-05-15',
     stock: 35,
     colors: ['Blue', 'Black'],
-    sizes: ['Standard']
-  },
-  {
-    id: '11',
-    name: 'Professional Router Tool',
-    price: 18999,
-    discount: 5,
-    description: 'Variable speed router with soft start and precision depth adjustment.',
-    category: 'Power Tools',
-    subcategory: 'Routers',
-    tags: ['router', 'woodworking', 'professional'],
-    images: [
-      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
-      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
-    ],
-    specifications: {
-      power: '1600W',
-      voltage: '230V',
-      weight: '3.6kg',
-      warranty: '2 years',
-      manufacturer: 'YariTools Pro',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.7,
-    reviews: 156,
-    createdAt: '2024-01-28',
-    stock: 45,
-    colors: ['Blue', 'Black'],
-    sizes: ['Standard']
-  },
-  {
-    id: '12',
-    name: 'Demolition Hammer',
-    price: 32999,
-    discount: 0,
-    description: 'Heavy-duty demolition hammer with anti-vibration system.',
-    category: 'Power Tools',
-    subcategory: 'Hammers',
-    tags: ['hammer', 'demolition', 'professional'],
-    images: [
-      'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg',
-      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
-    ],
-    specifications: {
-      power: '1500W',
-      voltage: '230V',
-      weight: '6.8kg',
-      warranty: '3 years',
-      manufacturer: 'YariTools Pro',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.9,
-    reviews: 89,
-    createdAt: '2024-01-20',
-    stock: 25,
-    colors: ['Yellow', 'Black'],
-    sizes: ['Standard']
-  },
-
-  // Hand Tools
-  {
-    id: '13',
-    name: 'Professional Wrench Set',
-    price: 4999,
-    discount: 10,
-    description: 'Complete set of professional-grade combination wrenches.',
-    category: 'Hand Tools',
-    subcategory: 'Wrenches',
-    tags: ['wrench', 'hand tools', 'professional'],
-    images: [
-      'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg'
-    ],
-    specifications: {
-      material: 'Chrome Vanadium Steel',
-      weight: '4.2kg',
-      warranty: '2 years',
-      manufacturer: 'YariTools Pro',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.7,
-    reviews: 234,
-    createdAt: '2024-01-15',
-    stock: 100,
-    colors: ['Silver'],
-    sizes: ['8-32mm']
-  },
-  {
-    id: '14',
-    name: 'Premium Screwdriver Set',
-    price: 2999,
-    discount: 0,
-    description: 'Professional screwdriver set with ergonomic handles.',
-    category: 'Hand Tools',
-    subcategory: 'Screwdrivers',
-    tags: ['screwdriver', 'hand tools', 'professional'],
-    images: [
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
-      'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg'
-    ],
-    specifications: {
-      material: 'Chrome Vanadium Steel',
-      weight: '1.2kg',
-      warranty: '2 years',
-      manufacturer: 'YariTools Pro',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.6,
-    reviews: 178,
-    createdAt: '2024-01-18',
-    stock: 150,
-    colors: ['Red', 'Blue'],
     sizes: ['Standard']
   },
 
   // Safety Equipment
   {
-    id: '4',
-    name: 'Safety Helmet with Face Shield',
+    id: '3',
+    name: 'Premium Safety Helmet',
     price: 2499,
     discount: 0,
-    description: 'Premium safety helmet with integrated face shield and adjustable fitting.',
+    description: 'High-quality safety helmet with adjustable fitting and ventilation.',
     category: 'Safety Equipment',
     subcategory: 'Head Protection',
     tags: ['safety', 'helmet', 'protection'],
@@ -198,13 +86,13 @@ const products: Product[] = [
     },
     rating: 4.7,
     reviews: 156,
-    createdAt: '2024-01-25',
+    createdAt: '2024-05-20',
     stock: 200,
     colors: ['White', 'Yellow', 'Blue'],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    id: '15',
+    id: '4',
     name: 'Cut Resistant Gloves',
     price: 999,
     discount: 5,
@@ -225,124 +113,65 @@ const products: Product[] = [
     },
     rating: 4.5,
     reviews: 245,
-    createdAt: '2024-01-22',
+    createdAt: '2024-05-22',
     stock: 300,
     colors: ['Gray', 'Black'],
     sizes: ['S', 'M', 'L', 'XL']
   },
-  {
-    id: '16',
-    name: 'Safety Harness Kit',
-    price: 4999,
-    discount: 0,
-    description: 'Full-body safety harness with lanyard and anchor points.',
-    category: 'Safety Equipment',
-    subcategory: 'Fall Protection',
-    tags: ['safety', 'harness', 'protection'],
-    images: [
-      'https://images.pexels.com/photos/8005397/pexels-photo-8005397.jpeg',
-      'https://images.pexels.com/photos/8005398/pexels-photo-8005398.jpeg'
-    ],
-    specifications: {
-      material: 'High-strength Polyester',
-      weight: '2.5kg',
-      warranty: '1 year',
-      manufacturer: 'YariSafety',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.8,
-    reviews: 167,
-    createdAt: '2024-01-20',
-    stock: 100,
-    colors: ['Orange', 'Yellow'],
-    sizes: ['Universal']
-  },
 
-  // Industrial Equipment
+  // New Arrivals
   {
-    id: '3',
-    name: 'Industrial Air Compressor',
-    price: 49999,
+    id: '5',
+    name: 'Advanced Power Drill Set',
+    price: 29999,
     discount: 0,
-    description: 'High-capacity air compressor suitable for industrial applications with dual-stage compression.',
-    category: 'Industrial',
-    subcategory: 'Compressors',
-    tags: ['compressor', 'industrial', 'heavy-duty'],
+    description: 'Complete professional drill set with multiple attachments and carrying case.',
+    category: 'New Arrivals',
+    subcategory: 'Power Tools',
+    tags: ['drill', 'professional', 'set'],
     images: [
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
-      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg',
-      'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg'
-    ],
-    specifications: {
-      power: '3000W',
-      voltage: '400V',
-      weight: '85kg',
-      dimensions: '1200 x 600 x 900mm',
-      warranty: '5 years',
-      manufacturer: 'YariIndustrial',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.9,
-    reviews: 89,
-    createdAt: '2024-01-20',
-    stock: 15,
-    colors: ['Gray'],
-    sizes: ['Large']
-  },
-  {
-    id: '17',
-    name: 'Industrial Band Saw',
-    price: 89999,
-    discount: 10,
-    description: 'Heavy-duty metal cutting band saw for industrial use.',
-    category: 'Industrial',
-    subcategory: 'Cutting Equipment',
-    tags: ['saw', 'industrial', 'metal cutting'],
-    images: [
-      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
-      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
-    ],
-    specifications: {
-      power: '2200W',
-      voltage: '400V',
-      weight: '125kg',
-      warranty: '2 years',
-      manufacturer: 'YariIndustrial',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.7,
-    reviews: 56,
-    createdAt: '2024-01-25',
-    stock: 10,
-    colors: ['Blue'],
-    sizes: ['Standard']
-  },
-  {
-    id: '18',
-    name: 'Industrial Dust Collector',
-    price: 34999,
-    discount: 5,
-    description: 'High-capacity dust collection system for industrial workshops.',
-    category: 'Industrial',
-    subcategory: 'Ventilation',
-    tags: ['dust collector', 'industrial', 'ventilation'],
-    images: [
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
-      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
+      'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg',
+      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
     ],
     specifications: {
       power: '1500W',
       voltage: '230V',
-      weight: '45kg',
-      warranty: '2 years',
-      manufacturer: 'YariIndustrial',
+      weight: '3.2kg',
+      warranty: '3 years',
+      manufacturer: 'YariTools Pro',
       countryOfOrigin: 'India'
     },
-    rating: 4.6,
-    reviews: 78,
-    createdAt: '2024-01-22',
-    stock: 20,
-    colors: ['Gray'],
+    rating: 4.9,
+    reviews: 45,
+    createdAt: '2024-05-25',
+    stock: 30,
+    colors: ['Red', 'Black'],
+    sizes: ['Standard']
+  },
+  {
+    id: '6',
+    name: 'Professional Tool Kit',
+    price: 19999,
+    discount: 10,
+    description: 'Comprehensive tool kit for professional mechanics and technicians.',
+    category: 'New Arrivals',
+    subcategory: 'Hand Tools',
+    tags: ['tools', 'professional', 'kit'],
+    images: [
+      'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
+      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg'
+    ],
+    specifications: {
+      weight: '12kg',
+      warranty: '2 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.8,
+    reviews: 32,
+    createdAt: '2024-05-24',
+    stock: 25,
+    colors: ['Red', 'Black'],
     sizes: ['Standard']
   }
 ];
@@ -358,6 +187,7 @@ export const getProductById = (id: string): Product | null => {
 export const getProductsByCategory = (category: string): Product[] => {
   if (category === 'new') {
     return products
+      .filter(product => product.category === 'New Arrivals')
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 4);
   }

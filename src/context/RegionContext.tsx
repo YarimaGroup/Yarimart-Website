@@ -15,53 +15,7 @@ const defaultRegion: Region = {
   flag: '🇮🇳'
 };
 
-const regions: Region[] = [
-  defaultRegion,
-  {
-    code: 'US',
-    name: 'United States',
-    currency: {
-      code: 'USD',
-      symbol: '$',
-      rate: 0.012,
-      name: 'US Dollar'
-    },
-    flag: '🇺🇸'
-  },
-  {
-    code: 'EU',
-    name: 'European Union',
-    currency: {
-      code: 'EUR',
-      symbol: '€',
-      rate: 0.011,
-      name: 'Euro'
-    },
-    flag: '🇪🇺'
-  },
-  {
-    code: 'GB',
-    name: 'United Kingdom',
-    currency: {
-      code: 'GBP',
-      symbol: '£',
-      rate: 0.0095,
-      name: 'British Pound'
-    },
-    flag: '🇬🇧'
-  },
-  {
-    code: 'JP',
-    name: 'Japan',
-    currency: {
-      code: 'JPY',
-      symbol: '¥',
-      rate: 1.78,
-      name: 'Japanese Yen'
-    },
-    flag: '🇯🇵'
-  }
-];
+const regions: Region[] = [defaultRegion];
 
 interface RegionContextType {
   currentRegion: Region;
@@ -86,25 +40,24 @@ interface RegionProviderProps {
 }
 
 export const RegionProvider: React.FC<RegionProviderProps> = ({ children }) => {
-  const [currentRegion, setCurrentRegion] = useState<Region>(defaultRegion);
+  const [currentRegion] = useState<Region>(defaultRegion);
 
   const convertPrice = (price: number): number => {
-    return price * currentRegion.currency.rate;
+    return price;
   };
 
   const formatPrice = (price: number): string => {
-    const convertedPrice = convertPrice(price);
-    return new Intl.NumberFormat(currentRegion.code, {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: currentRegion.currency.code
-    }).format(convertedPrice);
+      currency: 'INR'
+    }).format(price);
   };
 
   return (
     <RegionContext.Provider
       value={{
         currentRegion,
-        setCurrentRegion,
+        setCurrentRegion: () => {}, // No-op since we only support India
         regions,
         formatPrice,
         convertPrice
