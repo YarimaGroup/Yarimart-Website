@@ -61,6 +61,37 @@ export default {
           '50%': { opacity: '.5' },
         },
       },
+      typography: theme => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.gray.700'),
+            maxWidth: '65ch',
+          },
+        },
+        invert: {
+          css: {
+            color: theme('colors.gray.300'),
+            h1: {
+              color: theme('colors.white'),
+            },
+            h2: {
+              color: theme('colors.white'),
+            },
+            h3: {
+              color: theme('colors.white'),
+            },
+            h4: {
+              color: theme('colors.white'),
+            },
+            a: {
+              color: theme('colors.primary.400'),
+            },
+            strong: {
+              color: theme('colors.white'),
+            },
+          },
+        },
+      }),
     },
   },
   plugins: [

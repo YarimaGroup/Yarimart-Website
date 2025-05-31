@@ -46,14 +46,15 @@ export const translations = {
       addedToCart: 'Added to Cart',
       outOfStock: 'Out of Stock',
       inStock: 'In Stock',
-      onlyLeft: 'Only {count} left',
+      onlyLeft: 'Only {count} left in stock',
       description: 'Description',
       details: 'Details',
       reviews: 'Reviews',
       shipping: 'Shipping & Returns',
       relatedProducts: 'You may also like',
       sizeGuide: 'Size guide',
-      quantity: 'Quantity'
+      quantity: 'Quantity',
+      noProducts: 'No products found in this category.'
     },
     cart: {
       title: 'Your Shopping Cart',
@@ -96,6 +97,33 @@ export const translations = {
       services: 'Services',
       company: 'Company',
       copyright: '© {year} Yarimart. All rights reserved.'
+    },
+    newsletter: {
+      title: 'Join Our Newsletter',
+      subtitle: 'Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.',
+      placeholder: 'Your email address',
+      button: 'Subscribe',
+      thanks: 'Thank you for subscribing!'
+    },
+    catalog: {
+      searchResults: 'Search results for',
+      allProducts: 'All Products',
+      filters: 'Filters',
+      reset: 'Reset',
+      resetAll: 'Reset All',
+      resetFilters: 'Reset filters',
+      priceRange: 'Price Range',
+      sortBy: 'Sort by',
+      newest: 'Newest',
+      priceLowHigh: 'Price: Low to High',
+      priceHighLow: 'Price: High to Low',
+      popular: 'Most Popular',
+      showing: 'Showing',
+      product: 'product',
+      products: 'products',
+      noProducts: 'No products found.',
+      filteredProducts: 'Filtered Products',
+      showResults: 'Show Results'
     }
   },
   ml: {
@@ -145,14 +173,15 @@ export const translations = {
       addedToCart: 'കാർട്ടിൽ ചേർത്തു',
       outOfStock: 'സ്റ്റോക്കിൽ ഇല്ല',
       inStock: 'സ്റ്റോക്കിൽ ഉണ്ട്',
-      onlyLeft: 'കേവലം {count} എണ്ണം മാത്രം',
+      onlyLeft: 'കേവലം {count} എണ്ണം മാത്രം സ്റ്റോക്കിൽ ഉണ്ട്',
       description: 'വിവരണം',
       details: 'വിശദാംശങ്ങൾ',
       reviews: 'അവലോകനങ്ങൾ',
       shipping: 'ഷിപ്പിംഗും റിട്ടേണുകളും',
       relatedProducts: 'നിങ്ങൾക്ക് ഇഷ്ടപ്പെടാവുന്ന മറ്റ് ഉൽപ്പന്നങ്ങൾ',
       sizeGuide: 'സൈസ് ഗൈഡ്',
-      quantity: 'എണ്ണം'
+      quantity: 'എണ്ണം',
+      noProducts: 'ഈ വിഭാഗത്തിൽ ഉൽപ്പന്നങ്ങളൊന്നും കണ്ടെത്തിയില്ല.'
     },
     cart: {
       title: 'നിങ്ങളുടെ ഷോപ്പിംഗ് കാർട്ട്',
@@ -195,6 +224,33 @@ export const translations = {
       services: 'സേവനങ്ങൾ',
       company: 'കമ്പനി',
       copyright: '© {year} യാരിമാർട്ട്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.'
+    },
+    newsletter: {
+      title: 'ഞങ്ങളുടെ ന്യൂസ്‌ലെറ്ററിൽ ചേരുക',
+      subtitle: 'പ്രത്യേക ഓഫറുകൾ, സൗജന്യ സമ്മാനങ്ങൾ, ആജീവനാന്ത ഡീലുകൾ എന്നിവയ്ക്കായി സബ്‌സ്‌ക്രൈബ് ചെയ്യുക.',
+      placeholder: 'നിങ്ങളുടെ ഇമെയിൽ വിലാസം',
+      button: 'സബ്സ്ക്രൈബ്',
+      thanks: 'സബ്സ്ക്രൈബ് ചെയ്തതിന് നന്ദി!'
+    },
+    catalog: {
+      searchResults: 'തിരയൽ ഫലങ്ങൾ',
+      allProducts: 'എല്ലാ ഉൽപ്പന്നങ്ങളും',
+      filters: 'ഫിൽട്ടറുകൾ',
+      reset: 'റീസെറ്റ്',
+      resetAll: 'എല്ലാം റീസെറ്റ് ചെയ്യുക',
+      resetFilters: 'ഫിൽട്ടറുകൾ റീസെറ്റ് ചെയ്യുക',
+      priceRange: 'വില പരിധി',
+      sortBy: 'ക്രമീകരിക്കുക',
+      newest: 'പുതിയവ',
+      priceLowHigh: 'വില: കുറഞ്ഞത് മുതൽ കൂടിയത് വരെ',
+      priceHighLow: 'വില: കൂടിയത് മുതൽ കുറഞ്ഞത് വരെ',
+      popular: 'ഏറ്റവും ജനപ്രിയം',
+      showing: 'കാണിക്കുന്നു',
+      product: 'ഉൽപ്പന്നം',
+      products: 'ഉൽപ്പന്നങ്ങൾ',
+      noProducts: 'ഉൽപ്പന്നങ്ങൾ കണ്ടെത്തിയില്ല.',
+      filteredProducts: 'ഫിൽട്ടർ ചെയ്ത ഉൽപ്പന്നങ്ങൾ',
+      showResults: 'ഫലങ്ങൾ കാണിക്കുക'
     }
   },
   hi: {
@@ -251,7 +307,8 @@ export const translations = {
       shipping: 'शिपिंग और वापसी',
       relatedProducts: 'आपको ये भी पसंद आ सकते हैं',
       sizeGuide: 'साइज़ गाइड',
-      quantity: 'मात्रा'
+      quantity: 'मात्रा',
+      noProducts: 'इस श्रेणी में कोई उत्पाद नहीं मिला।'
     },
     cart: {
       title: 'आपका शॉपिंग कार्ट',
@@ -294,6 +351,33 @@ export const translations = {
       services: 'सेवाएं',
       company: 'कंपनी',
       copyright: '© {year} यारीमार्ट. सर्वाधिकार सुरक्षित.'
+    },
+    newsletter: {
+      title: 'हमारे न्यूज़लेटर से जुड़ें',
+      subtitle: 'विशेष ऑफर, मुफ्त उपहार, और अनोखे डील्स पाने के लिए सब्सक्राइब करें।',
+      placeholder: 'आपका ईमेल पता',
+      button: 'सब्सक्राइब',
+      thanks: 'सब्सक्राइब करने के लिए धन्यवाद!'
+    },
+    catalog: {
+      searchResults: 'के लिए खोज परिणाम',
+      allProducts: 'सभी उत्पाद',
+      filters: 'फिल्टर',
+      reset: 'रीसेट',
+      resetAll: 'सभी रीसेट करें',
+      resetFilters: 'फिल्टर रीसेट करें',
+      priceRange: 'मूल्य सीमा',
+      sortBy: 'क्रमबद्ध करें',
+      newest: 'नवीनतम',
+      priceLowHigh: 'मूल्य: कम से अधिक',
+      priceHighLow: 'मूल्य: अधिक से कम',
+      popular: 'सबसे लोकप्रिय',
+      showing: 'दिखा रहा है',
+      product: 'उत्पाद',
+      products: 'उत्पाद',
+      noProducts: 'कोई उत्पाद नहीं मिला।',
+      filteredProducts: 'फ़िल्टर किए गए उत्पाद',
+      showResults: 'परिणाम दिखाएं'
     }
   }
 };
