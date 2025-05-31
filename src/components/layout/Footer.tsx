@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex items-center space-x-4 text-gray-300">
               <Phone size={20} className="flex-shrink-0" />
-              <span className="text-sm">24/7 Support: 1-800-YARIMART</span>
+              <span className="text-sm">24/7 Support: +917594888505</span>
             </div>
             <div className="flex items-center space-x-4 text-gray-300">
               <MapPin size={20} className="flex-shrink-0" />
