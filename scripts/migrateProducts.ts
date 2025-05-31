@@ -1,3 +1,4 @@
+import 'dotenv/config'; // Load environment variables from .env file
 import { supabase } from '../src/lib/supabase';
 import { getProducts } from '../src/utils/productUtils';
 

@@ -249,14 +249,14 @@ const ProductPage: React.FC = () => {
           <div className="mt-4">
             {product.discount > 0 ? (
               <div className="flex items-center">
-                <span className="text-2xl font-bold text-accent-600 dark:text-accent-400">${finalPrice.toFixed(2)}</span>
-                <span className="ml-2 text-gray-500 dark:text-gray-400 line-through">${product.price.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-accent-600 dark:text-accent-400">{"$" + finalPrice.toFixed(2)}</span>
+                <span className="ml-2 text-gray-500 dark:text-gray-400 line-through">{"$" + product.price.toFixed(2)}</span>
                 <span className="ml-2 bg-accent-100 dark:bg-accent-800 text-accent-800 dark:text-accent-100 text-xs font-medium px-2 py-1 rounded">
                   {product.discount}% OFF
                 </span>
               </div>
             ) : (
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">${product.price.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">{"$" + product.price.toFixed(2)}</span>
             )}
           </div>
 
