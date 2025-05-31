@@ -118,15 +118,42 @@ const products: Product[] = [
     colors: ['Gray', 'Black'],
     sizes: ['S', 'M', 'L', 'XL']
   },
-
-  // New Arrivals
   {
     id: '5',
+    name: 'Safety Goggles',
+    price: 599,
+    discount: 0,
+    description: 'Impact-resistant safety goggles with anti-fog coating.',
+    category: 'Safety Equipment',
+    subcategory: 'Eye Protection',
+    tags: ['safety', 'goggles', 'protection'],
+    images: [
+      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
+      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
+    ],
+    specifications: {
+      material: 'Polycarbonate',
+      weight: '85g',
+      warranty: '1 year',
+      manufacturer: 'YariSafety',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.6,
+    reviews: 178,
+    createdAt: '2024-05-23',
+    stock: 250,
+    colors: ['Clear', 'Yellow'],
+    sizes: ['Universal']
+  },
+
+  // New Arrivals (last 30 days)
+  {
+    id: '6',
     name: 'Advanced Power Drill Set',
     price: 29999,
     discount: 0,
     description: 'Complete professional drill set with multiple attachments and carrying case.',
-    category: 'New Arrivals',
+    category: 'Power Tools',
     subcategory: 'Power Tools',
     tags: ['drill', 'professional', 'set'],
     images: [
@@ -149,12 +176,12 @@ const products: Product[] = [
     sizes: ['Standard']
   },
   {
-    id: '6',
+    id: '7',
     name: 'Professional Tool Kit',
     price: 19999,
     discount: 10,
     description: 'Comprehensive tool kit for professional mechanics and technicians.',
-    category: 'New Arrivals',
+    category: 'Hand Tools',
     subcategory: 'Hand Tools',
     tags: ['tools', 'professional', 'kit'],
     images: [
@@ -186,10 +213,13 @@ export const getProductById = (id: string): Product | null => {
 
 export const getProductsByCategory = (category: string): Product[] => {
   if (category === 'new') {
+    // Get products from the last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
     return products
-      .filter(product => product.category === 'New Arrivals')
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 4);
+      .filter(product => new Date(product.createdAt) >= thirtyDaysAgo)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   if (category === 'featured') {
