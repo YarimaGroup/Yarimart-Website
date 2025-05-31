@@ -30,16 +30,16 @@ const Footer: React.FC = () => {
               <span className="text-sm">{t('footer.address')}</span>
             </div>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white transition">
+              <a href="https://www.instagram.com/yarima_business_group" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition">
+              <a href="https://www.facebook.com/yarimaind" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition">
+              <a href="https://twitter.com/YarimaTools" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition">
+              <a href="mailto:yarimaind@gmail.com" className="text-gray-300 hover:text-white transition">
                 <Mail size={20} />
               </a>
             </div>
