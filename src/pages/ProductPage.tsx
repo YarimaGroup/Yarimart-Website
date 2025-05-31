@@ -7,6 +7,7 @@ import ProductCard from '../components/shared/ProductCard';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { Product } from '../types/product';
 
 const ProductPage: React.FC = () => {
@@ -14,14 +15,19 @@ const ProductPage: React.FC = () => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { t } = useLanguage();
+  const { user } = useAuth();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [activeImage, setActiveImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [activeTab, setActiveTab] = useState('details');
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(5);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewSuccess, setReviewSuccess] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -32,10 +38,6 @@ const ProductPage: React.FC = () => {
         // Set default selections
         if (foundProduct.sizes && foundProduct.sizes.length > 0) {
           setSelectedSize(foundProduct.sizes[0]);
-        }
-        
-        if (foundProduct.colors && foundProduct.colors.length > 0) {
-          setSelectedColor(foundProduct.colors[0]);
         }
         
         setRelatedProducts(getRelatedProducts(foundProduct.id, foundProduct.category));
@@ -59,7 +61,7 @@ const ProductPage: React.FC = () => {
       addToCart({
         ...product,
         selectedSize: selectedSize || '',
-        selectedColor: selectedColor || ''
+        selectedColor: ''
       }, quantity);
     }
   };
@@ -70,6 +72,49 @@ const ProductPage: React.FC = () => {
       setIsWishlisted(!isWishlisted);
     }
   };
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingReview(true);
+    
+    // Simulate API call to submit review
+    setTimeout(() => {
+      setSubmittingReview(false);
+      setReviewSuccess(true);
+      setReviewText('');
+      setReviewRating(5);
+      
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setReviewSuccess(false);
+      }, 3000);
+    }, 1000);
+  };
+
+  // Sample reviews data - in a real app, this would come from the database
+  const reviews = [
+    {
+      id: 1,
+      userName: 'Rahul Sharma',
+      rating: 5,
+      date: '2024-05-15',
+      text: 'Excellent product! It has greatly improved my workflow and the quality is outstanding.'
+    },
+    {
+      id: 2,
+      userName: 'Priya Patel',
+      rating: 4,
+      date: '2024-05-10',
+      text: 'Very good product. Durable and well-made. Only giving 4 stars because delivery was a bit delayed.'
+    },
+    {
+      id: 3,
+      userName: 'Amit Kumar',
+      rating: 5,
+      date: '2024-05-02',
+      text: 'Perfect for my needs. The product exceeded my expectations in terms of performance and build quality.'
+    }
+  ];
 
   if (!product) {
     return (
@@ -174,28 +219,6 @@ const ProductPage: React.FC = () => {
             <p className="text-gray-700 dark:text-gray-300">{product.description}</p>
           </div>
 
-          {/* Colors */}
-          {product.colors && product.colors.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white">Color</h3>
-              <div className="flex space-x-2 mt-2">
-                {product.colors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`h-8 w-8 rounded-full border-2 ${
-                      selectedColor === color 
-                        ? 'border-primary-500' 
-                        : 'border-gray-200 dark:border-gray-700'
-                    }`}
-                    style={{ backgroundColor: color.toLowerCase() }}
-                    title={color}
-                  ></button>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Sizes */}
           {product.sizes && product.sizes.length > 0 && (
             <div className="mt-8">
@@ -284,25 +307,226 @@ const ProductPage: React.FC = () => {
       <div className="mt-16">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <nav className="-mb-px flex space-x-8">
-            <button className="border-primary-500 text-primary-600 dark:text-primary-400 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            <button 
+              onClick={() => setActiveTab('details')}
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'details' 
+                  ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
               {t('product.details')}
             </button>
-            <button className="border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            <button 
+              onClick={() => setActiveTab('reviews')}
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'reviews' 
+                  ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
               {t('product.reviews')} ({product.reviews})
             </button>
-            <button className="border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+            <button 
+              onClick={() => setActiveTab('shipping')}
+              className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'shipping' 
+                  ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
               {t('product.shipping')}
             </button>
           </nav>
         </div>
-        <div className="py-8 prose dark:prose-invert max-w-none">
-          <h3 className="dark:text-white">{t('product.details')}</h3>
-          <p className="dark:text-gray-300">{product.description}</p>
-          <ul className="dark:text-gray-300">
-            <li>Material: {product.specifications?.material || 'Not specified'}</li>
-            <li>Country of Origin: {product.specifications?.countryOfOrigin || 'Not specified'}</li>
-            <li>Care: Hand wash or machine wash cold</li>
-          </ul>
+        
+        {/* Tab Content */}
+        <div className="py-8">
+          {activeTab === 'details' && (
+            <div className="prose dark:prose-invert max-w-none">
+              <h3 className="dark:text-white">{t('product.details')}</h3>
+              <p className="dark:text-gray-300">{product.description}</p>
+              <ul className="dark:text-gray-300">
+                <li>Material: {product.specifications?.material || 'Not specified'}</li>
+                <li>Country of Origin: {product.specifications?.countryOfOrigin || 'Not specified'}</li>
+                <li>Care: Hand wash or machine wash cold</li>
+              </ul>
+            </div>
+          )}
+          
+          {activeTab === 'reviews' && (
+            <div>
+              <h3 className="text-xl font-bold mb-6 dark:text-white">Customer Reviews</h3>
+              
+              {/* Review statistics */}
+              <div className="flex items-center mb-8">
+                <div className="mr-6">
+                  <div className="text-5xl font-bold text-gray-900 dark:text-white">{product.rating.toFixed(1)}</div>
+                  <div className="flex mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-5 w-5 ${
+                          i < Math.floor(product.rating)
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-300 dark:text-gray-600'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Based on {product.reviews} reviews
+                  </div>
+                </div>
+                
+                <div className="flex-1 max-w-md">
+                  {[5, 4, 3, 2, 1].map(star => (
+                    <div key={star} className="flex items-center mb-1">
+                      <div className="text-sm text-gray-600 dark:text-gray-400 w-4">{star}</div>
+                      <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 ml-1 mr-2" />
+                      <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-yellow-400 rounded-full"
+                          style={{ 
+                            width: `${star === 5 ? 70 : star === 4 ? 20 : star === 3 ? 7 : star === 2 ? 2 : 1}%` 
+                          }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 ml-2 w-8">
+                        {star === 5 ? '70%' : star === 4 ? '20%' : star === 3 ? '7%' : star === 2 ? '2%' : '1%'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Write a review */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg mb-8">
+                <h4 className="text-lg font-medium mb-4 dark:text-white">Write a Review</h4>
+                
+                {user ? (
+                  <form onSubmit={handleSubmitReview}>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Rating
+                      </label>
+                      <div className="flex items-center">
+                        {[1, 2, 3, 4, 5].map(rating => (
+                          <button
+                            key={rating}
+                            type="button"
+                            onClick={() => setReviewRating(rating)}
+                            className="mr-1"
+                          >
+                            <Star 
+                              className={`h-6 w-6 ${
+                                rating <= reviewRating 
+                                  ? 'text-yellow-400 fill-yellow-400' 
+                                  : 'text-gray-300 dark:text-gray-600'
+                              }`} 
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label htmlFor="review" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Your Review
+                      </label>
+                      <textarea
+                        id="review"
+                        rows={4}
+                        value={reviewText}
+                        onChange={(e) => setReviewText(e.target.value)}
+                        required
+                        className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="Share your experience with this product..."
+                      ></textarea>
+                    </div>
+                    
+                    {reviewSuccess && (
+                      <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-md">
+                        Your review has been submitted successfully. Thank you for your feedback!
+                      </div>
+                    )}
+                    
+                    <button
+                      type="submit"
+                      disabled={submittingReview || !reviewText.trim()}
+                      className={`px-4 py-2 rounded-md text-white font-medium ${
+                        submittingReview || !reviewText.trim()
+                          ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                          : 'bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600'
+                      }`}
+                    >
+                      {submittingReview ? 'Submitting...' : 'Submit Review'}
+                    </button>
+                  </form>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                      Please sign in to leave a review.
+                    </p>
+                    <Link
+                      to="/auth"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600"
+                    >
+                      Sign In
+                    </Link>
+                  </div>
+                )}
+              </div>
+              
+              {/* Reviews list */}
+              <div className="space-y-6">
+                {reviews.map(review => (
+                  <div key={review.id} className="border-b border-gray-200 dark:border-gray-700 pb-6">
+                    <div className="flex justify-between mb-2">
+                      <div className="font-medium dark:text-white">{review.userName}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        {new Date(review.date).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div className="flex mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i < review.rating
+                              ? 'text-yellow-400 fill-yellow-400'
+                              : 'text-gray-300 dark:text-gray-600'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300">{review.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {activeTab === 'shipping' && (
+            <div className="prose dark:prose-invert max-w-none">
+              <h3 className="dark:text-white">Shipping & Returns</h3>
+              <h4 className="dark:text-white">Shipping Policy</h4>
+              <ul className="dark:text-gray-300">
+                <li>Free shipping on orders above ₹5,000</li>
+                <li>Standard shipping (3-5 business days): ₹100</li>
+                <li>Express shipping (1-2 business days): ₹250</li>
+                <li>Shipping available throughout India</li>
+              </ul>
+              
+              <h4 className="dark:text-white mt-6">Return Policy</h4>
+              <p className="dark:text-gray-300">
+                We accept returns within 30 days of delivery for most products. Items must be unused, undamaged, and in their original packaging.
+              </p>
+              <p className="dark:text-gray-300">
+                For defective items, we offer replacements or full refunds within 7 days of delivery.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
