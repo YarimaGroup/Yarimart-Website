@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Filter, X } from 'lucide-react';
 import ProductCard from '../components/shared/ProductCard';
-import { getProducts } from '../utils/productUtils';
+import { getProductsByCategory } from '../utils/productUtils';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 import { Product } from '../types/product';
 import { useRegion } from '../context/RegionContext';
@@ -24,31 +24,30 @@ const CatalogPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
-    setIsLoading(true);
-    // Simulate network delay for smoother loading states
-    const timer = setTimeout(() => {
-      const allProducts = getProducts();
-      let filtered = allProducts;
-
-      if (category) {
-        const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
-        filtered = allProducts.filter(product => 
-          product.category.toLowerCase() === normalizedCategory);
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      try {
+        let fetchedProducts = await getProductsByCategory(category || '');
+        
+        // Apply search filter if search query exists
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          fetchedProducts = fetchedProducts.filter(product => 
+            product.name.toLowerCase().includes(query) || 
+            product.description.toLowerCase().includes(query) ||
+            product.category.toLowerCase().includes(query));
+        }
+        
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      } finally {
+        setIsLoading(false);
       }
-
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(product => 
-          product.name.toLowerCase().includes(query) || 
-          product.description.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query));
-      }
-
-      setProducts(filtered);
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
+    };
+    
+    fetchProducts();
   }, [category, searchQuery]);
 
   const filteredProducts = useMemo(() => {
@@ -83,7 +82,7 @@ const CatalogPage: React.FC = () => {
         filtered.sort((a, b) => b.rating - a.rating);
         break;
       default: // newest
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     }
     
     return filtered;

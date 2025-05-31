@@ -1,6 +1,123 @@
+import { supabase } from '../lib/supabase';
 import { Product } from '../types/product';
 
-const products: Product[] = [
+// This function now fetches products from Supabase instead of using local data
+export const getProducts = async (): Promise<Product[]> => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*');
+    
+  if (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
+  
+  return data as Product[];
+};
+
+// Get a product by ID from Supabase
+export const getProductById = async (id: string): Promise<Product | null> => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', id)
+    .single();
+    
+  if (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
+  
+  return data as Product;
+};
+
+// Get products by category from Supabase
+export const getProductsByCategory = async (category: string): Promise<Product[]> => {
+  if (category === 'new') {
+    // Get products from the last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .gte('created_at', thirtyDaysAgo.toISOString())
+      .order('created_at', { ascending: false });
+      
+    if (error) {
+      console.error('Error fetching new products:', error);
+      return [];
+    }
+    
+    return data as Product[];
+  }
+
+  if (category === 'featured') {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('rating', { ascending: false })
+      .limit(8);
+      
+    if (error) {
+      console.error('Error fetching featured products:', error);
+      return [];
+    }
+    
+    return data as Product[];
+  }
+
+  if (category === 'sale') {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .gt('discount', 0)
+      .order('discount', { ascending: false });
+      
+    if (error) {
+      console.error('Error fetching sale products:', error);
+      return [];
+    }
+    
+    return data as Product[];
+  }
+
+  // Convert category to lowercase and replace hyphens with spaces for comparison
+  const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
+  
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .ilike('category', normalizedCategory);
+    
+  if (error) {
+    console.error('Error fetching products by category:', error);
+    return [];
+  }
+  
+  return data as Product[];
+};
+
+// Get related products from Supabase
+export const getRelatedProducts = async (productId: string, category: string): Promise<Product[]> => {
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category', category)
+    .neq('id', productId)
+    .limit(4);
+    
+  if (error) {
+    console.error('Error fetching related products:', error);
+    return [];
+  }
+  
+  return data as Product[];
+};
+
+// Local backup of products in case Supabase is not configured or available
+// This will be used for the migration script
+const localProducts = [
   // Power Tools
   {
     id: '1',
@@ -834,47 +951,5 @@ const products: Product[] = [
   }
 ];
 
-export const getProducts = (): Product[] => {
-  return products;
-};
-
-export const getProductById = (id: string): Product | null => {
-  return products.find(product => product.id === id) || null;
-};
-
-export const getProductsByCategory = (category: string): Product[] => {
-  if (category === 'new') {
-    // Get products from the last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
-    return products
-      .filter(product => new Date(product.createdAt) >= thirtyDaysAgo)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }
-
-  if (category === 'featured') {
-    return products
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, 8);
-  }
-
-  if (category === 'sale') {
-    return products
-      .filter(product => product.discount > 0)
-      .sort((a, b) => b.discount - a.discount);
-  }
-
-  // Convert category to lowercase and replace hyphens with spaces for comparison
-  const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
-  
-  return products.filter(product => 
-    product.category.toLowerCase() === normalizedCategory
-  );
-};
-
-export const getRelatedProducts = (productId: string, category: string): Product[] => {
-  return products
-    .filter(product => product.id !== productId && product.category === category)
-    .slice(0, 4);
-};
+// This allows us to use the local products for migration
+export { localProducts };

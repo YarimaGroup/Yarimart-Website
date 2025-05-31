@@ -28,22 +28,39 @@ const ProductPage: React.FC = () => {
   const [reviewRating, setReviewRating] = useState(5);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewSuccess, setReviewSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      const foundProduct = getProductById(id);
-      setProduct(foundProduct);
-      
-      if (foundProduct) {
-        // Set default selections
-        if (foundProduct.sizes && foundProduct.sizes.length > 0) {
-          setSelectedSize(foundProduct.sizes[0]);
+    const fetchProductData = async () => {
+      setLoading(true);
+      try {
+        if (id) {
+          const foundProduct = await getProductById(id);
+          
+          if (foundProduct) {
+            setProduct(foundProduct);
+            
+            // Set default selections
+            if (foundProduct.sizes && foundProduct.sizes.length > 0) {
+              setSelectedSize(foundProduct.sizes[0]);
+            }
+            
+            // Fetch related products
+            const related = await getRelatedProducts(foundProduct.id, foundProduct.category);
+            setRelatedProducts(related);
+            
+            // Check if in wishlist
+            setIsWishlisted(isInWishlist(foundProduct.id));
+          }
         }
-        
-        setRelatedProducts(getRelatedProducts(foundProduct.id, foundProduct.category));
-        setIsWishlisted(isInWishlist(foundProduct.id));
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+    
+    fetchProductData();
   }, [id, isInWishlist]);
 
   const decreaseQuantity = () => {
@@ -115,6 +132,35 @@ const ProductPage: React.FC = () => {
       text: 'Perfect for my needs. The product exceeded my expectations in terms of performance and build quality.'
     }
   ];
+
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="animate-pulse">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-8"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="space-y-4">
+              <div className="aspect-square rounded-lg bg-gray-200 dark:bg-gray-700"></div>
+              <div className="flex space-x-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-md"></div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mt-4"></div>
+              <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded w-full mt-4"></div>
+              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-full mt-8"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
