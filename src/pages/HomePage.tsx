@@ -16,45 +16,41 @@ const HomePage: React.FC = () => {
       link: '/catalog/power-tools',
     },
     {
-      id: 'hand-tools',
-      name: 'Hand Tools',
-      description: 'Quality hand tools for precision work',
-      image: 'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
-      link: '/catalog/hand-tools',
+      id: 'safety-equipment',
+      name: 'Safety Equipment',
+      description: 'Complete range of safety gear and equipment',
+      image: 'https://images.pexels.com/photos/8005397/pexels-photo-8005397.jpeg',
+      link: '/catalog/safety-equipment',
     },
     {
-      id: 'industrial',
+      id: 'industrial-equipment',
       name: 'Industrial Equipment',
       description: 'Heavy-duty machinery and industrial supplies',
       image: 'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
-      link: '/catalog/industrial',
+      link: '/catalog/industrial-equipment',
     },
   ];
 
-  const services = [
+  const features = [
     {
       icon: Tool,
       title: 'Equipment Rental',
       description: 'Rent professional-grade tools and equipment for your projects',
-      link: '/equipment-rental',
     },
     {
       icon: Wrench,
       title: 'Repair Services',
       description: 'Expert repair and maintenance for all types of tools',
-      link: '/repair-service',
     },
     {
       icon: Truck,
       title: 'Bulk Orders',
       description: 'Special pricing and delivery for large quantity orders',
-      link: '/bulk-orders',
     },
     {
       icon: Clock,
       title: '24/7 Support',
       description: 'Round-the-clock technical support and assistance',
-      link: '/technical-support',
     },
   ];
 
@@ -86,36 +82,35 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Services */}
+      {/* Features */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Professional Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Complete solutions for your industrial and professional needs
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service) => {
-              const IconComponent = service.icon;
+            {features.map((feature) => {
+              const IconComponent = feature.icon;
               return (
-                <Link
-                  key={service.title}
-                  to={service.link}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition group"
+                <div
+                  key={feature.title}
+                  className="bg-white p-6 rounded-lg shadow-sm group"
                 >
                   <div className="flex flex-col items-center text-center">
                     <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mb-4 group-hover:bg-primary-100 transition">
                       <IconComponent className="w-8 h-8 text-primary-600" />
                     </div>
                     <h3 className="text-lg font-semibold mb-2 group-hover:text-primary-600 transition">
-                      {service.title}
+                      {feature.title}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {service.description}
+                      {feature.description}
                     </p>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>
