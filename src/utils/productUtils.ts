@@ -27,7 +27,7 @@ const products: Product[] = [
     },
     rating: 4.8,
     reviews: 245,
-    createdAt: '2024-02-01',
+    createdAt: '2024-05-01',
     stock: 50,
     colors: ['Red', 'Black'],
     sizes: ['Standard']
@@ -63,9 +63,67 @@ const products: Product[] = [
     sizes: ['Standard']
   },
 
-  // Safety Equipment
+  // Industrial Equipment
   {
     id: '3',
+    name: 'Industrial Air Compressor',
+    price: 89999,
+    discount: 0,
+    description: 'High-capacity industrial air compressor with dual-stage compression.',
+    category: 'Industrial',
+    subcategory: 'Compressors',
+    tags: ['compressor', 'industrial', 'heavy-duty'],
+    images: [
+      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
+      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
+    ],
+    specifications: {
+      power: '5500W',
+      voltage: '400V',
+      weight: '125kg',
+      warranty: '3 years',
+      manufacturer: 'YariIndustrial',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.9,
+    reviews: 78,
+    createdAt: '2024-05-10',
+    stock: 15,
+    colors: ['Blue'],
+    sizes: ['Industrial']
+  },
+  {
+    id: '4',
+    name: 'Industrial Band Saw',
+    price: 149999,
+    discount: 5,
+    description: 'Heavy-duty metal cutting band saw for industrial applications.',
+    category: 'Industrial',
+    subcategory: 'Cutting Equipment',
+    tags: ['saw', 'industrial', 'metal cutting'],
+    images: [
+      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
+      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
+    ],
+    specifications: {
+      power: '2200W',
+      voltage: '400V',
+      weight: '320kg',
+      warranty: '2 years',
+      manufacturer: 'YariIndustrial',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.7,
+    reviews: 45,
+    createdAt: '2024-05-12',
+    stock: 8,
+    colors: ['Gray'],
+    sizes: ['Industrial']
+  },
+
+  // Safety Equipment
+  {
+    id: '5',
     name: 'Premium Safety Helmet',
     price: 2499,
     discount: 0,
@@ -92,7 +150,7 @@ const products: Product[] = [
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    id: '4',
+    id: '6',
     name: 'Cut Resistant Gloves',
     price: 999,
     discount: 5,
@@ -118,37 +176,10 @@ const products: Product[] = [
     colors: ['Gray', 'Black'],
     sizes: ['S', 'M', 'L', 'XL']
   },
-  {
-    id: '5',
-    name: 'Safety Goggles',
-    price: 599,
-    discount: 0,
-    description: 'Impact-resistant safety goggles with anti-fog coating.',
-    category: 'Safety Equipment',
-    subcategory: 'Eye Protection',
-    tags: ['safety', 'goggles', 'protection'],
-    images: [
-      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
-      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
-    ],
-    specifications: {
-      material: 'Polycarbonate',
-      weight: '85g',
-      warranty: '1 year',
-      manufacturer: 'YariSafety',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.6,
-    reviews: 178,
-    createdAt: '2024-05-23',
-    stock: 250,
-    colors: ['Clear', 'Yellow'],
-    sizes: ['Universal']
-  },
 
   // New Arrivals (last 30 days)
   {
-    id: '6',
+    id: '7',
     name: 'Advanced Power Drill Set',
     price: 29999,
     discount: 0,
@@ -176,30 +207,32 @@ const products: Product[] = [
     sizes: ['Standard']
   },
   {
-    id: '7',
-    name: 'Professional Tool Kit',
-    price: 19999,
-    discount: 10,
-    description: 'Comprehensive tool kit for professional mechanics and technicians.',
-    category: 'Hand Tools',
-    subcategory: 'Hand Tools',
-    tags: ['tools', 'professional', 'kit'],
+    id: '8',
+    name: 'Industrial Generator',
+    price: 199999,
+    discount: 0,
+    description: 'Heavy-duty industrial generator with automatic voltage regulation.',
+    category: 'Industrial',
+    subcategory: 'Power Generation',
+    tags: ['generator', 'industrial', 'power'],
     images: [
-      'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg'
+      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
+      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
     ],
     specifications: {
-      weight: '12kg',
-      warranty: '2 years',
-      manufacturer: 'YariTools Pro',
+      power: '15000W',
+      voltage: '400V',
+      weight: '280kg',
+      warranty: '3 years',
+      manufacturer: 'YariIndustrial',
       countryOfOrigin: 'India'
     },
     rating: 4.8,
     reviews: 32,
     createdAt: '2024-05-24',
-    stock: 25,
-    colors: ['Red', 'Black'],
-    sizes: ['Standard']
+    stock: 5,
+    colors: ['Yellow'],
+    sizes: ['Industrial']
   }
 ];
 
