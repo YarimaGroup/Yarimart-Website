@@ -6,6 +6,11 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import CatalogPage from './pages/CatalogPage';
 import AuthPage from './pages/AuthPage';
+import AboutPage from './pages/AboutPage';
+import LocationsPage from './pages/LocationsPage';
+import CareersPage from './pages/CareersPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
@@ -25,6 +30,11 @@ function App() {
                   <Route path="/product/:id" element={<ProductPage />} />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/locations" element={<LocationsPage />} />
+                  <Route path="/careers" element={<CareersPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                  <Route path="/terms" element={<TermsPage />} />
                 </Routes>
               </Layout>
             </WishlistProvider>
