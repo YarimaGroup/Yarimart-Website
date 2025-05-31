@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { Product } from '../../types/product';
@@ -14,6 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { formatPrice } = useRegion();
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   const isWishlisted = isInWishlist(product.id);
 
@@ -49,12 +50,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           <Heart className={isWishlisted ? 'fill-accent-500' : ''} size={20} />
         </button>
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
-        />
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent pt-10 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className={`transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+          />
+        </div>
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+        )}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/50 to-transparent pt-10 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={handleAddToCart}
             className="mx-auto block bg-white text-primary-900 text-sm font-medium px-4 py-2 rounded-md hover:bg-gray-100 transition"
@@ -63,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </button>
         </div>
       </div>
-      <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition">{product.name}</h3>
+      <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition line-clamp-2">{product.name}</h3>
       <div className="mt-1 flex items-center">
         {product.discount > 0 ? (
           <>
@@ -87,4 +95,4 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

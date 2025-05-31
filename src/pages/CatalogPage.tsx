@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Filter, X } from 'lucide-react';
 import ProductCard from '../components/shared/ProductCard';
@@ -14,7 +14,7 @@ const CatalogPage: React.FC = () => {
   const { convertPrice } = useRegion();
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
 
   // Filter states
@@ -24,29 +24,34 @@ const CatalogPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('newest');
 
   useEffect(() => {
-    // Fetch products based on category
-    const allProducts = getProducts();
-    let filtered = allProducts;
+    setIsLoading(true);
+    // Simulate network delay for smoother loading states
+    const timer = setTimeout(() => {
+      const allProducts = getProducts();
+      let filtered = allProducts;
 
-    if (category) {
-      filtered = allProducts.filter(product => 
-        product.category.toLowerCase() === category.toLowerCase());
-    }
+      if (category) {
+        const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
+        filtered = allProducts.filter(product => 
+          product.category.toLowerCase() === normalizedCategory);
+      }
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = allProducts.filter(product => 
-        product.name.toLowerCase().includes(query) || 
-        product.description.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query));
-    }
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(product => 
+          product.name.toLowerCase().includes(query) || 
+          product.description.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query));
+      }
 
-    setProducts(filtered);
-    setFilteredProducts(filtered);
+      setProducts(filtered);
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [category, searchQuery]);
 
-  useEffect(() => {
-    // Apply filters and sorting
+  const filteredProducts = useMemo(() => {
     let filtered = [...products];
     
     // Price filter
@@ -93,44 +98,63 @@ const CatalogPage: React.FC = () => {
         filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
     
-    setFilteredProducts(filtered);
+    return filtered;
   }, [products, priceRange, selectedColors, selectedSizes, sortBy, convertPrice]);
 
-  const toggleFilterMenu = () => {
-    setIsFilterMenuOpen(!isFilterMenuOpen);
-  };
+  const toggleFilterMenu = useCallback(() => {
+    setIsFilterMenuOpen(prev => !prev);
+  }, []);
 
-  const toggleColor = (color: string) => {
+  const toggleColor = useCallback((color: string) => {
     setSelectedColors(prev => 
       prev.includes(color) 
         ? prev.filter(c => c !== color) 
         : [...prev, color]
     );
-  };
+  }, []);
 
-  const toggleSize = (size: string) => {
+  const toggleSize = useCallback((size: string) => {
     setSelectedSizes(prev => 
       prev.includes(size) 
         ? prev.filter(s => s !== size) 
         : [...prev, size]
     );
-  };
+  }, []);
 
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setPriceRange([0, 100000]);
     setSelectedColors([]);
     setSelectedSizes([]);
     setSortBy('newest');
-  };
+  }, []);
 
   // Get all unique colors and sizes for filters
-  const availableColors = Array.from(new Set(
+  const availableColors = useMemo(() => Array.from(new Set(
     products.flatMap(product => product.colors || [])
-  )).sort();
+  )).sort(), [products]);
 
-  const availableSizes = Array.from(new Set(
+  const availableSizes = useMemo(() => Array.from(new Set(
     products.flatMap(product => product.sizes || [])
-  )).sort();
+  )).sort(), [products]);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="animate-pulse space-y-8">
+          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="space-y-4">
+                <div className="aspect-square bg-gray-200 rounded-lg"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -358,7 +382,6 @@ const CatalogPage: React.FC = () => {
                   key={color} 
                   className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800"
                 >
-                
                   {color}
                   <button 
                     onClick={() => toggleColor(color)}
