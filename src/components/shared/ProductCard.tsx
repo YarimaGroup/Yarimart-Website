@@ -33,45 +33,57 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link 
       to={`/product/${product.id}`} 
-      className="group"
+      className="group block"
     >
-      <div className="relative rounded-lg overflow-hidden bg-gray-100 aspect-square mb-4">
-        {product.discount > 0 && (
-          <span className="absolute top-2 left-2 bg-accent-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
-            {product.discount}% OFF
-          </span>
-        )}
-        <button
-          onClick={handleToggleWishlist}
-          className={`absolute top-2 right-2 p-2 rounded-full z-10 transition
-            ${isWishlisted 
-              ? 'bg-primary-100 text-accent-500' 
-              : 'bg-white text-gray-400 hover:text-accent-500'}`}
-        >
-          <Heart className={isWishlisted ? 'fill-accent-500' : ''} size={20} />
-        </button>
-        <div className={`transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <img
-            src={product.images[0]}
-            alt={product.name}
-            className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
-            loading="lazy"
-            onLoad={() => setImageLoaded(true)}
-          />
-        </div>
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-        )}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/50 to-transparent pt-10 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="relative bg-gray-100 mb-4">
+        <div className="w-full aspect-square relative overflow-hidden rounded-lg">
+          {product.discount > 0 && (
+            <span className="absolute top-2 left-2 bg-accent-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+              {product.discount}% OFF
+            </span>
+          )}
           <button
-            onClick={handleAddToCart}
-            className="mx-auto block bg-white text-primary-900 text-sm font-medium px-4 py-2 rounded-md hover:bg-gray-100 transition"
+            onClick={handleToggleWishlist}
+            className={`absolute top-2 right-2 p-2 rounded-full z-10 transition
+              ${isWishlisted 
+                ? 'bg-primary-100 text-accent-500' 
+                : 'bg-white text-gray-400 hover:text-accent-500'}`}
           >
-            Add to Cart
+            <Heart className={isWishlisted ? 'fill-accent-500' : ''} size={20} />
           </button>
+          
+          {/* Image container with proper aspect ratio */}
+          <div className="w-full h-full relative">
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+            )}
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              className={`w-full h-full object-cover transition duration-300 group-hover:scale-105 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setImageLoaded(true)}
+              loading="lazy"
+            />
+          </div>
+
+          {/* Hover overlay */}
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/50 to-transparent pt-10 pb-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              onClick={handleAddToCart}
+              className="mx-auto block bg-white text-primary-900 text-sm font-medium px-4 py-2 rounded-md hover:bg-gray-100 transition"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
-      <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition line-clamp-2">{product.name}</h3>
+
+      <h3 className="font-medium text-gray-900 group-hover:text-primary-600 transition line-clamp-2 min-h-[2.5rem]">
+        {product.name}
+      </h3>
+      
       <div className="mt-1 flex items-center">
         {product.discount > 0 ? (
           <>
@@ -83,9 +95,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
           </>
         ) : (
-          <span className="text-gray-900 font-medium">{formatPrice(product.price)}</span>
+          <span className="text-gray-900 font-medium">
+            {formatPrice(product.price)}
+          </span>
         )}
       </div>
+      
       {product.stock < 10 && (
         <p className="text-sm text-accent-600 mt-1">
           Only {product.stock} left in stock
