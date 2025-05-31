@@ -85,25 +85,37 @@ const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Timeline */}
-      <div className="mt-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Our Journey</h2>
+      {/* Journey Timeline */}
+      <div className="mt-24">
+        <h2 className="text-3xl font-bold text-center mb-16">Our Journey</h2>
         <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gray-200"></div>
-          <div className="space-y-12">
+          {/* Timeline Line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary-500 to-primary-100"></div>
+          
+          {/* Timeline Items */}
+          <div className="space-y-24">
             {milestones.map((milestone, index) => (
-              <div key={index} className={`relative flex items-center ${
-                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-              }`}>
+              <div key={index} className={`relative flex ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                {/* Content */}
+                <div className="flex-1 md:w-1/2">
+                  <div className={`relative p-6 ${
+                    index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'
+                  }`}>
+                    <div className="bg-white rounded-lg shadow-lg p-6 transform transition-transform hover:scale-105 hover:shadow-xl">
+                      <span className="text-4xl font-bold text-primary-600">{milestone.year}</span>
+                      <h3 className="text-xl font-bold mt-2">{milestone.title}</h3>
+                      <p className="text-gray-600 mt-2">{milestone.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timeline Point */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-primary-600 rounded-full border-4 border-white shadow"></div>
+                </div>
+
+                {/* Empty Space for Layout */}
                 <div className="flex-1 md:w-1/2"></div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-primary-600 z-10">
-                  <div className="w-3 h-3 rounded-full bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                </div>
-                <div className="flex-1 md:w-1/2 p-6 bg-white rounded-lg shadow-sm">
-                  <span className="text-primary-600 font-bold">{milestone.year}</span>
-                  <h3 className="text-xl font-bold mt-1">{milestone.title}</h3>
-                  <p className="text-gray-600 mt-2">{milestone.description}</p>
-                </div>
               </div>
             ))}
           </div>
@@ -111,16 +123,22 @@ const AboutPage: React.FC = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="mt-16 text-center">
+      <div className="mt-24 text-center bg-primary-50 rounded-2xl p-12">
         <h2 className="text-3xl font-bold mb-4">Join Us in Our Journey</h2>
-        <p className="text-xl text-gray-600 mb-8">
+        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
           Experience the difference of working with a company that puts quality and customer satisfaction first.
         </p>
         <div className="flex justify-center gap-4">
-          <a href="/contact" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+          <a 
+            href="/contact" 
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transform transition-transform hover:scale-105"
+          >
             Contact Us
           </a>
-          <a href="/careers" className="inline-flex items-center px-6 py-3 border border-primary-600 text-base font-medium rounded-md text-primary-600 hover:bg-primary-50">
+          <a 
+            href="/careers" 
+            className="inline-flex items-center px-6 py-3 border border-primary-600 text-base font-medium rounded-md text-primary-600 hover:bg-primary-50 transform transition-transform hover:scale-105"
+          >
             View Careers
           </a>
         </div>
