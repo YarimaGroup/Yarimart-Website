@@ -18,8 +18,7 @@ const Navbar: React.FC = () => {
     { name: 'Power Tools', path: '/catalog/power-tools' },
     { name: 'Safety Equipment', path: '/catalog/safety-equipment' },
     { name: 'Industrial Equipment', path: '/catalog/industrial-equipment' },
-    { name: 'New Arrivals', path: '/catalog/new' },
-    { name: 'Sale', path: '/catalog/sale' },
+    { name: 'New Arrivals', path: '/catalog/new' }
   ];
 
   const handleSearch = (e: React.FormEvent) => {
