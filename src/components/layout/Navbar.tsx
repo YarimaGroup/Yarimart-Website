@@ -140,16 +140,30 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden text-gray-700 hover:text-primary-600 transition"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
+            <div className="flex md:hidden items-center space-x-4">
+              <Link
+                to="/cart"
+                className="text-gray-700 hover:text-primary-600 transition relative"
+              >
+                <ShoppingBag className="h-6 w-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-700 hover:text-primary-600 transition"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -237,22 +251,6 @@ const Navbar: React.FC = () => {
               >
                 <Heart className="h-5 w-5 mr-2" />
                 Wishlist
-              </Link>
-
-              <Link
-                to="/cart"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <div className="relative">
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-1 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </div>
-                Cart
               </Link>
             </div>
           </div>
