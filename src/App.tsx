@@ -15,6 +15,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import ProfilePage from './pages/ProfilePage';
 import OrdersPage from './pages/OrdersPage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
@@ -38,6 +39,7 @@ function App() {
                   <Route path="/auth" element={<AuthPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/profile/orders" element={<OrdersPage />} />
+                  <Route path="/order/:id" element={<OrderDetailsPage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/locations" element={<LocationsPage />} />
                   <Route path="/careers" element={<CareersPage />} />
@@ -53,4 +55,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
