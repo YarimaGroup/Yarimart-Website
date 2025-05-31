@@ -27,6 +27,7 @@ const Navbar: React.FC = () => {
     if (searchQuery.trim()) {
       navigate(`/catalog?search=${encodeURIComponent(searchQuery)}`);
       setSearchQuery('');
+      setIsMenuOpen(false);
     }
   };
 
@@ -76,66 +77,68 @@ const Navbar: React.FC = () => {
               </div>
             </form>
 
-            {user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+            <div className="hidden md:flex items-center space-x-4">
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                    className="text-gray-700 hover:text-primary-600 transition"
+                  >
+                    <User className="h-6 w-6" />
+                  </button>
+                  {isProfileMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        Profile Settings
+                      </Link>
+                      <Link
+                        to="/profile/orders"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        <div className="flex items-center">
+                          <Package className="h-4 w-4 mr-2" />
+                          My Orders
+                        </div>
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  to="/auth"
                   className="text-gray-700 hover:text-primary-600 transition"
                 >
                   <User className="h-6 w-6" />
-                </button>
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      Profile Settings
-                    </Link>
-                    <Link
-                      to="/profile/orders"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      <div className="flex items-center">
-                        <Package className="h-4 w-4 mr-2" />
-                        My Orders
-                      </div>
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Sign out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                to="/auth"
-                className="text-gray-700 hover:text-primary-600 transition"
-              >
-                <User className="h-6 w-6" />
-              </Link>
-            )}
-
-            <Link to="/wishlist" className="text-gray-700 hover:text-primary-600 transition">
-              <Heart className="h-6 w-6" />
-            </Link>
-
-            <Link
-              to="/cart"
-              className="text-gray-700 hover:text-primary-600 transition relative"
-            >
-              <ShoppingBag className="h-6 w-6" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
+                </Link>
               )}
-            </Link>
+
+              <Link to="/wishlist" className="text-gray-700 hover:text-primary-600 transition">
+                <Heart className="h-6 w-6" />
+              </Link>
+
+              <Link
+                to="/cart"
+                className="text-gray-700 hover:text-primary-600 transition relative"
+              >
+                <ShoppingBag className="h-6 w-6" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            </div>
 
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -172,16 +175,86 @@ const Navbar: React.FC = () => {
               </div>
             </form>
 
-            {categories.map((category) => (
+            {/* Mobile Menu Items */}
+            <div className="space-y-2">
+              {categories.map((category) => (
+                <Link
+                  key={category.name}
+                  to={category.path}
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Account & Cart Section */}
+            <div className="border-t border-gray-200 pt-4 mt-4">
+              {user ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <User className="h-5 w-5 mr-2" />
+                    Profile Settings
+                  </Link>
+                  <Link
+                    to="/profile/orders"
+                    className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Package className="h-5 w-5 mr-2" />
+                    My Orders
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/auth"
+                  className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 mr-2" />
+                  Sign in
+                </Link>
+              )}
+
               <Link
-                key={category.name}
-                to={category.path}
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition"
+                to="/wishlist"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {category.name}
+                <Heart className="h-5 w-5 mr-2" />
+                Wishlist
               </Link>
-            ))}
+
+              <Link
+                to="/cart"
+                className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="relative">
+                  <ShoppingBag className="h-5 w-5 mr-2" />
+                  {cartItemCount > 0 && (
+                    <span className="absolute -top-2 -right-1 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartItemCount}
+                    </span>
+                  )}
+                </div>
+                Cart
+              </Link>
+            </div>
           </div>
         </div>
       )}
