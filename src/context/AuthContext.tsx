@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -25,22 +25,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    // Only run auth checks if Supabase is configured
+    if (isSupabaseConfigured()) {
+      // Check active sessions and sets the user
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      });
 
-    // Listen for changes on auth state
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+      // Listen for changes on auth state
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      });
 
-    return () => subscription.unsubscribe();
+      return () => subscription.unsubscribe();
+    } else {
+      // If Supabase is not configured, just set loading to false
+      setLoading(false);
+    }
   }, []);
 
   const signUp = async (email: string, password: string) => {
+    if (!isSupabaseConfigured()) {
+      console.error('Supabase is not properly configured');
+      throw new Error('Authentication service is not available');
+    }
+    
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -49,6 +60,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured()) {
+      console.error('Supabase is not properly configured');
+      throw new Error('Authentication service is not available');
+    }
+    
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -57,6 +73,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signOut = async () => {
+    if (!isSupabaseConfigured()) {
+      console.error('Supabase is not properly configured');
+      throw new Error('Authentication service is not available');
+    }
+    
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
