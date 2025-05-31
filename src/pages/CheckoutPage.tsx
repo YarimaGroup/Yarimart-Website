@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useRegion } from '../context/RegionContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
-import { MapPin, CreditCard, Truck, Shield } from 'lucide-react';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+import { MapPin, CreditCard, Truck, Shield, Wallet } from 'lucide-react';
 
 const CheckoutPage: React.FC = () => {
   const { cart, clearCart } = useCart();
@@ -17,6 +14,7 @@ const CheckoutPage: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'bank'>('cod');
   const [address, setAddress] = useState({
     fullName: '',
     addressLine1: '',
@@ -58,21 +56,19 @@ const CheckoutPage: React.FC = () => {
     setError(null);
 
     try {
-      const stripe = await stripePromise;
-      if (!stripe) throw new Error('Stripe failed to load');
-
-      // Here you would typically make an API call to your backend to:
-      // 1. Create a Stripe payment intent
-      // 2. Save the order details
-      // 3. Get the client secret
-      // For demo purposes, we'll simulate a successful payment
+      // Simulate order processing
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      setTimeout(() => {
-        clearCart();
-        navigate('/order-success');
-      }, 2000);
+      // In a real application, you would:
+      // 1. Send order details to your backend
+      // 2. Create order in database
+      // 3. Send confirmation email
+      // 4. Handle inventory updates
+      
+      clearCart();
+      navigate('/order-success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Payment failed');
+      setError(err instanceof Error ? err.message : 'Order processing failed');
     } finally {
       setLoading(false);
     }
@@ -203,6 +199,55 @@ const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Payment Method Selection */}
+            <div>
+              <h3 className="text-lg font-medium mb-4">Payment Method</h3>
+              <div className="space-y-4">
+                <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:border-primary-500 transition">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cod"
+                    checked={paymentMethod === 'cod'}
+                    onChange={() => setPaymentMethod('cod')}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <div className="ml-3">
+                    <span className="font-medium">Cash on Delivery</span>
+                    <p className="text-sm text-gray-500">Pay when you receive your order</p>
+                  </div>
+                </label>
+
+                <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:border-primary-500 transition">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="bank"
+                    checked={paymentMethod === 'bank'}
+                    onChange={() => setPaymentMethod('bank')}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <div className="ml-3">
+                    <span className="font-medium">Bank Transfer</span>
+                    <p className="text-sm text-gray-500">Pay directly to our bank account</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {paymentMethod === 'bank' && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Bank Details</h4>
+                <div className="text-sm space-y-1">
+                  <p>Account Name: Yarimart Tools Pvt Ltd</p>
+                  <p>Account Number: 1234567890</p>
+                  <p>IFSC Code: SBIN0123456</p>
+                  <p>Bank: State Bank of India</p>
+                  <p>Branch: Kochi Main Branch</p>
+                </div>
+              </div>
+            )}
+
             {error && (
               <div className="text-red-600 text-sm">{error}</div>
             )}
@@ -224,7 +269,7 @@ const CheckoutPage: React.FC = () => {
           <div className="mt-8">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Shield className="w-4 h-4" />
-              <span>Your payment information is secure</span>
+              <span>Your information is secure</span>
             </div>
           </div>
         </div>
@@ -285,8 +330,8 @@ const CheckoutPage: React.FC = () => {
                 <span>Delivery within 3-5 business days</span>
               </div>
               <div className="flex items-center text-sm text-gray-600">
-                <CreditCard className="w-4 h-4 mr-2" />
-                <span>Secure payment processing</span>
+                <Wallet className="w-4 h-4 mr-2" />
+                <span>Secure payment options</span>
               </div>
             </div>
           </div>
