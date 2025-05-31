@@ -139,9 +139,6 @@ const Footer: React.FC = () => {
             <div className="text-sm text-gray-400">
               <p>&copy; {new Date().getFullYear()} Yarimart. All rights reserved.</p>
             </div>
-           
-           
-            </div>
           </div>
         </div>
       </div>
