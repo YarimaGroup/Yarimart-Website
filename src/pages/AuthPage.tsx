@@ -72,7 +72,7 @@ const AuthPage: React.FC = () => {
             <div className="mb-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <AlertCircle className="h-5 w-5 text-red-400" aria-hidden="true" />
+                  <AlertCircle className="h-5 w-5 text-red-400\" aria-hidden="true" />
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
