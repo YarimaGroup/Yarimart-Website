@@ -17,7 +17,7 @@ const Newsletter: React.FC = () => {
   };
 
   return (
-    <section className="bg-primary-900 text-white py-16">
+    <section className="bg-primary-900 text-white py-16 dark:bg-primary-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">{t('newsletter.title') || 'Join Our Newsletter'}</h2>
         <p className="text-gray-300 max-w-md mx-auto mb-8">
@@ -25,7 +25,7 @@ const Newsletter: React.FC = () => {
         </p>
         
         {subscribed ? (
-          <div className="bg-primary-800 p-4 rounded-md inline-block">
+          <div className="bg-primary-800 dark:bg-primary-900 p-4 rounded-md inline-block">
             <p className="text-lg">{t('newsletter.thanks') || 'Thank you for subscribing!'}</p>
           </div>
         ) : (
@@ -35,12 +35,12 @@ const Newsletter: React.FC = () => {
               placeholder={t('newsletter.placeholder') || 'Your email address'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-grow px-4 py-3 rounded-l-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+              className="flex-grow px-4 py-3 rounded-l-md text-gray-900 dark:text-white dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-secondary-500"
               required
             />
             <button
               type="submit"
-              className="bg-secondary-500 hover:bg-secondary-600 px-6 py-3 rounded-r-md font-medium transition"
+              className="bg-secondary-500 hover:bg-secondary-600 dark:bg-secondary-600 dark:hover:bg-secondary-700 px-6 py-3 rounded-r-md font-medium transition"
             >
               {t('newsletter.button') || 'Subscribe'}
             </button>

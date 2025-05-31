@@ -16,6 +16,7 @@ export default {
           700: '#0369a1',
           800: '#075985',
           900: '#0F172A',
+          950: '#0A1022',
         },
         secondary: {
           50: '#f9fafb',
@@ -96,5 +97,6 @@ export default {
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/typography'),
   ],
 };

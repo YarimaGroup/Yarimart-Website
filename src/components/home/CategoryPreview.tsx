@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface CategoryProps {
   category: {
@@ -12,6 +13,8 @@ interface CategoryProps {
 }
 
 const CategoryPreview: React.FC<CategoryProps> = ({ category }) => {
+  const { t } = useLanguage();
+  
   return (
     <Link
       to={category.link}
@@ -26,7 +29,7 @@ const CategoryPreview: React.FC<CategoryProps> = ({ category }) => {
         <h3 className="text-xl font-bold mb-2">{category.name}</h3>
         <p className="text-sm text-gray-200 mb-4">{category.description}</p>
         <span className="inline-flex items-center px-4 py-2 border border-white text-sm font-medium rounded-md text-white group-hover:bg-white group-hover:text-gray-900 dark:group-hover:text-gray-900 transition">
-          Shop Now
+          {t('home.sections.shopNow') || 'Shop Now'}
         </span>
       </div>
     </Link>

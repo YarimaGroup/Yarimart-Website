@@ -10,6 +10,8 @@ export interface Product {
   subcategory?: string;
   tags: string[];
   images: string[];
+  colors?: string[];
+  sizes?: string[];
   specifications: {
     power?: string;
     voltage?: string;
@@ -18,6 +20,12 @@ export interface Product {
     warranty?: string;
     manufacturer?: string;
     countryOfOrigin?: string;
+    material?: string;
+    origin?: string;
+  };
+  details?: {
+    material?: string;
+    origin?: string;
   };
   rating: number;
   reviews: number;
@@ -41,20 +49,20 @@ export type Region = {
 
 export interface Order {
   id: string;
-  userId: string;
+  user_id: string;
   items: OrderItem[];
-  shippingAddress: ShippingAddress;
-  paymentMethod: 'cod' | 'bank';
+  shipping_address: ShippingAddress;
+  payment_method: 'cod' | 'bank';
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered';
   subtotal: number;
   shipping: number;
   tax: number;
   total: number;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface OrderItem {
-  productId: string;
+  product_id: string;
   name: string;
   price: number;
   quantity: number;

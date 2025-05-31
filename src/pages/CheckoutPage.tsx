@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useRegion } from '../context/RegionContext';
+import { useLanguage } from '../context/LanguageContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 import { MapPin, CreditCard, Truck, Shield, Wallet } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -11,6 +12,7 @@ const CheckoutPage: React.FC = () => {
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
   const { formatPrice } = useRegion();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -149,17 +151,17 @@ const CheckoutPage: React.FC = () => {
         items={[
           { name: 'Home', href: '/' },
           { name: 'Cart', href: '/cart' },
-          { name: 'Checkout' }
+          { name: t('checkout.title') }
         ]} 
       />
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Checkout Form */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">Shipping Information</h2>
+          <h2 className="text-2xl font-bold mb-6 dark:text-white">{t('checkout.shippingInfo')}</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Full Name
               </label>
               <input
@@ -169,12 +171,12 @@ const CheckoutPage: React.FC = () => {
                 value={address.fullName}
                 onChange={handleAddressChange}
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Address Line 1
               </label>
               <input
@@ -184,12 +186,12 @@ const CheckoutPage: React.FC = () => {
                 value={address.addressLine1}
                 onChange={handleAddressChange}
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div>
-              <label htmlFor="addressLine2" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="addressLine2" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Address Line 2 (Optional)
               </label>
               <input
@@ -198,13 +200,13 @@ const CheckoutPage: React.FC = () => {
                 name="addressLine2"
                 value={address.addressLine2}
                 onChange={handleAddressChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   City
                 </label>
                 <input
@@ -214,12 +216,12 @@ const CheckoutPage: React.FC = () => {
                   value={address.city}
                   onChange={handleAddressChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="state" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   State
                 </label>
                 <input
@@ -229,14 +231,14 @@ const CheckoutPage: React.FC = () => {
                   value={address.state}
                   onChange={handleAddressChange}
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="pincode" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   PIN Code
                 </label>
                 <input
@@ -247,12 +249,12 @@ const CheckoutPage: React.FC = () => {
                   onChange={handleAddressChange}
                   required
                   pattern="[0-9]{6}"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Phone Number
                 </label>
                 <input
@@ -263,51 +265,51 @@ const CheckoutPage: React.FC = () => {
                   onChange={handleAddressChange}
                   required
                   pattern="[0-9]{10}"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
 
             {/* Payment Method Selection */}
             <div>
-              <h3 className="text-lg font-medium mb-4">Payment Method</h3>
+              <h3 className="text-lg font-medium mb-4 dark:text-white">{t('checkout.paymentMethod')}</h3>
               <div className="space-y-4">
-                <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:border-primary-500 transition">
+                <label className="flex items-center p-4 border dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 dark:hover:border-primary-400 transition">
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="cod"
                     checked={paymentMethod === 'cod'}
                     onChange={() => setPaymentMethod('cod')}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 dark:bg-gray-700"
                   />
                   <div className="ml-3">
-                    <span className="font-medium">Cash on Delivery</span>
-                    <p className="text-sm text-gray-500">Pay when you receive your order</p>
+                    <span className="font-medium dark:text-white">{t('checkout.cod')}</span>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('checkout.codDesc')}</p>
                   </div>
                 </label>
 
-                <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:border-primary-500 transition">
+                <label className="flex items-center p-4 border dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 dark:hover:border-primary-400 transition">
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="bank"
                     checked={paymentMethod === 'bank'}
                     onChange={() => setPaymentMethod('bank')}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 dark:bg-gray-700"
                   />
                   <div className="ml-3">
-                    <span className="font-medium">Bank Transfer</span>
-                    <p className="text-sm text-gray-500">Pay directly to our bank account</p>
+                    <span className="font-medium dark:text-white">{t('checkout.bank')}</span>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('checkout.bankDesc')}</p>
                   </div>
                 </label>
               </div>
             </div>
 
             {paymentMethod === 'bank' && (
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">Bank Details</h4>
-                <div className="text-sm space-y-1">
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                <h4 className="font-medium mb-2 dark:text-white">{t('checkout.bankDetails')}</h4>
+                <div className="text-sm space-y-1 dark:text-gray-300">
                   <p>Account Name: Yarimart Tools Pvt Ltd</p>
                   <p>Account Number: 1234567890</p>
                   <p>IFSC Code: SBIN0123456</p>
@@ -318,25 +320,25 @@ const CheckoutPage: React.FC = () => {
             )}
 
             {error && (
-              <div className="text-red-600 text-sm">{error}</div>
+              <div className="text-red-600 dark:text-red-400 text-sm">{error}</div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium ${
+              className={`w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium dark:bg-primary-700 ${
                 loading 
                   ? 'opacity-75 cursor-not-allowed' 
-                  : 'hover:bg-primary-700'
+                  : 'hover:bg-primary-700 dark:hover:bg-primary-600'
               } transition`}
             >
-              {loading ? 'Processing...' : 'Place Order'}
+              {loading ? t('checkout.processing') : t('checkout.placeOrder')}
             </button>
           </form>
 
           {/* Payment Security Info */}
           <div className="mt-8">
-            <div className="flex items-center space-x-2 text-sm text-gray-600">
+            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
               <Shield className="w-4 h-4" />
               <span>Your information is secure</span>
             </div>
@@ -345,8 +347,8 @@ const CheckoutPage: React.FC = () => {
 
         {/* Order Summary */}
         <div>
-          <div className="bg-gray-50 rounded-lg p-6 sticky top-24">
-            <h2 className="text-xl font-bold mb-6">Order Summary</h2>
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 sticky top-24">
+            <h2 className="text-xl font-bold mb-6 dark:text-white">{t('cart.orderSummary')}</h2>
 
             {/* Order Items */}
             <div className="space-y-4 mb-6">
@@ -358,10 +360,10 @@ const CheckoutPage: React.FC = () => {
                     className="w-16 h-16 object-cover rounded"
                   />
                   <div className="ml-4 flex-1">
-                    <h3 className="text-sm font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                    <h3 className="text-sm font-medium dark:text-white">{item.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Quantity: {item.quantity}</p>
                   </div>
-                  <div className="text-sm font-medium">
+                  <div className="text-sm font-medium dark:text-white">
                     {formatPrice(item.price * item.quantity)}
                   </div>
                 </div>
@@ -369,36 +371,36 @@ const CheckoutPage: React.FC = () => {
             </div>
 
             {/* Price Breakdown */}
-            <div className="border-t pt-4 space-y-2">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>Subtotal</span>
-                <span>{formatPrice(subtotal)}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t('cart.subtotal')}</span>
+                <span className="dark:text-white">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>Shipping</span>
-                <span>{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t('cart.shipping')}</span>
+                <span className="dark:text-white">{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span>GST (18%)</span>
-                <span>{formatPrice(tax)}</span>
+                <span className="text-gray-600 dark:text-gray-400">{t('cart.tax')}</span>
+                <span className="dark:text-white">{formatPrice(tax)}</span>
               </div>
-              <div className="flex justify-between font-bold text-lg border-t pt-2">
-                <span>Total</span>
-                <span>{formatPrice(total)}</span>
+              <div className="flex justify-between font-bold text-lg border-t border-gray-200 dark:border-gray-700 pt-2">
+                <span className="dark:text-white">{t('cart.total')}</span>
+                <span className="dark:text-white">{formatPrice(total)}</span>
               </div>
             </div>
 
             {/* Shipping Info */}
             <div className="mt-6 space-y-4">
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <Truck className="w-4 h-4 mr-2" />
-                <span>Free shipping on orders over ₹5,000</span>
+                <span>{t('cart.freeShipping')}</span>
               </div>
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <MapPin className="w-4 h-4 mr-2" />
                 <span>Delivery within 3-5 business days</span>
               </div>
-              <div className="flex items-center text-sm text-gray-600">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <Wallet className="w-4 h-4 mr-2" />
                 <span>Secure payment options</span>
               </div>
