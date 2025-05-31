@@ -820,8 +820,8 @@ const products: Product[] = [
     sizes: ['Standard'],
     specifications: {
       power: '1500W',
-      magnetic force: '15,000N',
-      drill capacity: 'Up to 50mm diameter',
+      "magnetic force": '15,000N',
+      "drill capacity": 'Up to 50mm diameter',
       weight: '12kg',
       warranty: '3 years',
       manufacturer: 'YariTools Pro',
