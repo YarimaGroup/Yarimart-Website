@@ -4,29 +4,25 @@ import { Settings, Package, Users, Layers, ShoppingBag, LogOut } from 'lucide-re
 import { useAuth } from '../../context/AuthContext';
 
 const AdminLayout: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   // Check if user has admin role
   useEffect(() => {
-    const checkAdminRole = async () => {
+    const checkAdminAccess = async () => {
       if (!user) {
         navigate('/auth');
         return;
       }
       
-      // Check for admin role in user metadata
-      // This is a simplified check - in a real application, 
-      // you'd want to verify this on the server side as well
-      const isAdmin = user.app_metadata?.role === 'admin' || user.user_metadata?.role === 'admin';
-      
       if (!isAdmin) {
         navigate('/');
+        return;
       }
     };
     
-    checkAdminRole();
-  }, [user, navigate]);
+    checkAdminAccess();
+  }, [user, isAdmin, navigate]);
   
   const handleSignOut = async () => {
     await signOut();
