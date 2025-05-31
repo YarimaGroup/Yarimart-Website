@@ -15,6 +15,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg',
       'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
     ],
+    colors: ['Black', 'Blue', 'Red'],
+    sizes: ['Standard', 'Compact'],
     specifications: {
       power: '1200W',
       voltage: '230V',
@@ -42,6 +44,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
       'https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg'
     ],
+    colors: ['Black', 'Green'],
+    sizes: ['4.5"', '5"'],
     specifications: {
       power: '18V',
       voltage: 'Battery powered',
@@ -69,6 +73,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
       'https://images.pexels.com/photos/1409221/pexels-photo-1409221.jpeg'
     ],
+    colors: ['Red', 'Black'],
+    sizes: ['7"', '8"'],
     specifications: {
       power: '1800W',
       voltage: '230V',
@@ -96,6 +102,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/4489815/pexels-photo-4489815.jpeg',
       'https://images.pexels.com/photos/4489782/pexels-photo-4489782.jpeg'
     ],
+    colors: ['Yellow', 'Black'],
+    sizes: ['Heavy Duty', 'Standard'],
     specifications: {
       power: '36V',
       voltage: 'Battery powered',
@@ -123,6 +131,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/3846477/pexels-photo-3846477.jpeg',
       'https://images.pexels.com/photos/3846284/pexels-photo-3846284.jpeg'
     ],
+    colors: ['Blue', 'Gray'],
+    sizes: ['5"', '6"'],
     specifications: {
       power: '300W',
       voltage: '230V',
@@ -152,6 +162,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/8005397/pexels-photo-8005397.jpeg',
       'https://images.pexels.com/photos/8005398/pexels-photo-8005398.jpeg'
     ],
+    colors: ['White', 'Yellow', 'Red', 'Blue'],
+    sizes: ['M', 'L', 'XL'],
     specifications: {
       material: 'High-impact ABS',
       weight: '450g',
@@ -177,6 +189,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/3846076/pexels-photo-3846076.jpeg',
       'https://images.pexels.com/photos/3846077/pexels-photo-3846077.jpeg'
     ],
+    colors: ['Gray', 'Black'],
+    sizes: ['S', 'M', 'L', 'XL'],
     specifications: {
       material: 'HPPE + Steel Fiber',
       weight: '120g',
@@ -202,6 +216,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/3951368/pexels-photo-3951368.jpeg',
       'https://images.pexels.com/photos/3951355/pexels-photo-3951355.jpeg'
     ],
+    colors: ['Black', 'Gray'],
+    sizes: ['Standard', 'Large'],
     specifications: {
       material: 'Silicone and polycarbonate',
       weight: '650g',
@@ -211,7 +227,7 @@ const products: Product[] = [
     },
     rating: 4.8,
     reviews: 123,
-    createdAt: '2024-04-30',
+    createdAt: '2024-05-28',
     stock: 85
   },
   {
@@ -227,6 +243,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg',
       'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg'
     ],
+    colors: ['Black', 'Orange'],
+    sizes: ['Universal'],
     specifications: {
       material: 'High-strength polyester',
       weight: '1.8kg',
@@ -236,7 +254,7 @@ const products: Product[] = [
     },
     rating: 4.9,
     reviews: 87,
-    createdAt: '2024-05-12',
+    createdAt: '2024-05-26',
     stock: 45
   },
   {
@@ -252,6 +270,8 @@ const products: Product[] = [
       'https://images.pexels.com/photos/3846118/pexels-photo-3846118.jpeg',
       'https://images.pexels.com/photos/3762879/pexels-photo-3762879.jpeg'
     ],
+    colors: ['Clear', 'Tinted'],
+    sizes: ['One Size'],
     specifications: {
       material: 'Polycarbonate',
       weight: '85g',
@@ -261,7 +281,7 @@ const products: Product[] = [
     },
     rating: 4.6,
     reviews: 198,
-    createdAt: '2024-05-18',
+    createdAt: '2024-05-30',
     stock: 150
   },
 
@@ -279,6 +299,7 @@ const products: Product[] = [
       'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
       'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
     ],
+    sizes: ['50L', '100L'],
     specifications: {
       power: '5500W',
       voltage: '400V',
@@ -575,6 +596,241 @@ const products: Product[] = [
     reviews: 234,
     createdAt: '2024-05-22',
     stock: 180
+  },
+
+  // NEW PRODUCTS - Adding new products with very recent dates to ensure they show in New Arrivals
+  {
+    id: '23',
+    name: 'Smart Measuring Laser Tool',
+    price: 14999,
+    discount: 0,
+    description: 'Digital laser measuring tool with Bluetooth connectivity and smartphone app integration for precise measurements.',
+    category: 'Power Tools',
+    subcategory: 'Measuring Tools',
+    tags: ['laser', 'measuring', 'smart', 'digital'],
+    images: [
+      'https://images.pexels.com/photos/5412270/pexels-photo-5412270.jpeg',
+      'https://images.pexels.com/photos/5412271/pexels-photo-5412271.jpeg'
+    ],
+    colors: ['Black', 'Orange'],
+    sizes: ['Professional', 'Compact'],
+    specifications: {
+      power: 'Rechargeable Li-ion Battery',
+      range: '0.05-70m',
+      accuracy: '±1.5mm',
+      weight: '150g',
+      dimensions: '120 x 50 x 30mm',
+      warranty: '2 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.9,
+    reviews: 47,
+    createdAt: '2024-05-31',
+    stock: 65
+  },
+  {
+    id: '24',
+    name: 'Multi-Function Power Station',
+    price: 32999,
+    discount: 5,
+    description: 'Portable power station with multiple outputs (AC, DC, USB) for powering tools and charging batteries on job sites without electricity.',
+    category: 'Power Tools',
+    subcategory: 'Power Supply',
+    tags: ['power', 'battery', 'charger', 'portable'],
+    images: [
+      'https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg',
+      'https://images.pexels.com/photos/2582928/pexels-photo-2582928.jpeg'
+    ],
+    colors: ['Black', 'Yellow'],
+    sizes: ['1000W', '1500W', '2000W'],
+    specifications: {
+      capacity: '1200Wh',
+      outputs: 'AC/DC/USB/USB-C',
+      weight: '15kg',
+      dimensions: '380 x 240 x 260mm',
+      warranty: '3 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.8,
+    reviews: 29,
+    createdAt: '2024-05-30',
+    stock: 25
+  },
+  {
+    id: '25',
+    name: 'Cordless Heat Gun Kit',
+    price: 8999,
+    discount: 10,
+    description: 'Versatile battery-powered heat gun with adjustable temperature settings and multiple nozzle attachments for various applications.',
+    category: 'Power Tools',
+    subcategory: 'Heat Guns',
+    tags: ['heat gun', 'cordless', 'versatile'],
+    images: [
+      'https://images.pexels.com/photos/6475045/pexels-photo-6475045.jpeg',
+      'https://images.pexels.com/photos/6475048/pexels-photo-6475048.jpeg'
+    ],
+    colors: ['Red', 'Yellow'],
+    sizes: ['Standard'],
+    specifications: {
+      power: '18V',
+      temperature: '50-600°C',
+      weight: '0.9kg',
+      battery: 'Li-ion 4.0Ah',
+      warranty: '2 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.6,
+    reviews: 38,
+    createdAt: '2024-05-29',
+    stock: 42
+  },
+  {
+    id: '26',
+    name: 'Smart Safety Helmet with HUD',
+    price: 19999,
+    discount: 0,
+    description: 'Next-generation safety helmet with integrated heads-up display (HUD) showing environmental data, communications, and work instructions.',
+    category: 'Safety Equipment',
+    subcategory: 'Smart Safety',
+    tags: ['smart', 'helmet', 'HUD', 'technology'],
+    images: [
+      'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg',
+      'https://images.pexels.com/photos/8566570/pexels-photo-8566570.jpeg'
+    ],
+    colors: ['White', 'Black'],
+    sizes: ['M', 'L', 'XL'],
+    specifications: {
+      material: 'Reinforced Composite',
+      battery: '10-hour runtime',
+      connectivity: 'Bluetooth 5.0, Wi-Fi',
+      weight: '520g',
+      warranty: '2 years',
+      manufacturer: 'YariSafety',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.9,
+    reviews: 18,
+    createdAt: '2024-05-31',
+    stock: 30
+  },
+  {
+    id: '27',
+    name: 'Automated Laser Level System',
+    price: 27999,
+    discount: 8,
+    description: 'Self-leveling rotary laser system with digital receiver for precise leveling across large distances in construction projects.',
+    category: 'Power Tools',
+    subcategory: 'Measuring Tools',
+    tags: ['laser', 'level', 'rotary', 'construction'],
+    images: [
+      'https://images.pexels.com/photos/5582595/pexels-photo-5582595.jpeg',
+      'https://images.pexels.com/photos/5582597/pexels-photo-5582597.jpeg'
+    ],
+    colors: ['Green', 'Red'],
+    sizes: ['500m Range', '1000m Range'],
+    specifications: {
+      accuracy: '±0.5mm at 10m',
+      range: 'Up to 500m with receiver',
+      battery: '20 hours operation',
+      protection: 'IP65 water/dust resistance',
+      warranty: '3 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.8,
+    reviews: 25,
+    createdAt: '2024-05-30',
+    stock: 20
+  },
+  {
+    id: '28',
+    name: 'Industrial IoT Monitoring Kit',
+    price: 45999,
+    discount: 0,
+    description: 'Complete IoT sensor system for industrial equipment monitoring, with real-time alerts and analytics dashboard.',
+    category: 'Industrial Equipment',
+    subcategory: 'Smart Industry',
+    tags: ['IoT', 'monitoring', 'sensors', 'analytics'],
+    images: [
+      'https://images.pexels.com/photos/3912428/pexels-photo-3912428.jpeg',
+      'https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg'
+    ],
+    colors: ['Black'],
+    sizes: ['Basic (5 sensors)', 'Pro (10 sensors)', 'Enterprise (20 sensors)'],
+    specifications: {
+      sensors: 'Temperature, Vibration, Pressure, Current',
+      connectivity: '4G LTE, Wi-Fi, Bluetooth',
+      power: 'AC powered with battery backup',
+      dimensions: 'Various components',
+      warranty: '3 years',
+      manufacturer: 'YariIndustrial',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.9,
+    reviews: 12,
+    createdAt: '2024-05-28',
+    stock: 15
+  },
+  {
+    id: '29',
+    name: 'Battery-Powered Concrete Mixer',
+    price: 79999,
+    discount: 12,
+    description: 'Portable, rechargeable concrete mixer for job sites without power access, with 90L mixing capacity.',
+    category: 'Industrial Equipment',
+    subcategory: 'Concrete Equipment',
+    tags: ['concrete', 'mixer', 'battery', 'portable'],
+    images: [
+      'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg',
+      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
+    ],
+    colors: ['Orange', 'Yellow'],
+    sizes: ['90L', '120L'],
+    specifications: {
+      capacity: '90 Liters',
+      battery: '36V Li-ion, 6-8 hours runtime',
+      mixing: 'Reversible drum with adjustable speed',
+      weight: '78kg',
+      warranty: '2 years',
+      manufacturer: 'YariIndustrial',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.7,
+    reviews: 9,
+    createdAt: '2024-05-29',
+    stock: 8
+  },
+  {
+    id: '30',
+    name: 'Magnetic Drill Press',
+    price: 34999,
+    discount: 5,
+    description: 'Portable magnetic drill press with swivel base for drilling in steel and metal structures at any angle.',
+    category: 'Power Tools',
+    subcategory: 'Drills',
+    tags: ['magnetic', 'drill', 'press', 'metal working'],
+    images: [
+      'https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg',
+      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
+    ],
+    colors: ['Red', 'Blue'],
+    sizes: ['Standard'],
+    specifications: {
+      power: '1500W',
+      magnetic force: '15,000N',
+      drill capacity: 'Up to 50mm diameter',
+      weight: '12kg',
+      warranty: '3 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.8,
+    reviews: 31,
+    createdAt: '2024-05-27',
+    stock: 18
   }
 ];
 
@@ -600,7 +856,7 @@ export const getProductsByCategory = (category: string): Product[] => {
   if (category === 'featured') {
     return products
       .sort((a, b) => b.rating - a.rating)
-      .slice(0, 4);
+      .slice(0, 8);
   }
 
   if (category === 'sale') {
