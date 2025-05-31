@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useRegion } from '../context/RegionContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 
 const CartPage: React.FC = () => {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { user } = useAuth();
+  const { formatPrice } = useRegion();
+  const navigate = useNavigate();
 
   const subtotal = cart.reduce((sum, item) => {
     const price = item.discount > 0 
@@ -14,13 +19,21 @@ const CartPage: React.FC = () => {
     return sum + price * item.quantity;
   }, 0);
 
-  const shipping = subtotal > 50 ? 0 : 5.99;
-  const tax = subtotal * 0.08; // 8% tax
+  const shipping = subtotal > 5000 ? 0 : 100;
+  const tax = subtotal * 0.18; // 18% GST
   const total = subtotal + shipping + tax;
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     if (newQuantity > 0) {
       updateQuantity(itemId, newQuantity);
+    }
+  };
+
+  const handleCheckout = () => {
+    if (!user) {
+      navigate('/auth');
+    } else {
+      navigate('/checkout');
     }
   };
 
@@ -61,7 +74,7 @@ const CartPage: React.FC = () => {
                     : item.price;
                     
                   return (
-                    <li key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="p-6">
+                    <li key={item.id} className="p-6">
                       <div className="flex flex-col sm:flex-row sm:items-center">
                         {/* Product image */}
                         <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
@@ -81,15 +94,12 @@ const CartPage: React.FC = () => {
                                   {item.name}
                                 </Link>
                               </h3>
-                              <p className="mt-1 text-sm text-gray-500">
-                                {item.selectedColor}, {item.selectedSize}
-                              </p>
                             </div>
                             <p className="text-sm font-medium text-gray-900">
-                              ${finalPrice.toFixed(2)}
+                              {formatPrice(finalPrice)}
                               {item.discount > 0 && (
                                 <span className="ml-2 text-gray-500 line-through text-xs">
-                                  ${item.price.toFixed(2)}
+                                  {formatPrice(item.price)}
                                 </span>
                               )}
                             </p>
@@ -151,45 +161,48 @@ const CartPage: React.FC = () => {
               <div className="mt-6 space-y-4">
                 <div className="flex justify-between">
                   <p className="text-gray-600">Subtotal</p>
-                  <p className="text-gray-900 font-medium">${subtotal.toFixed(2)}</p>
+                  <p className="text-gray-900 font-medium">{formatPrice(subtotal)}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-gray-600">Shipping</p>
                   <p className="text-gray-900 font-medium">
-                    {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'Free' : formatPrice(shipping)}
                   </p>
                 </div>
                 <div className="flex justify-between">
-                  <p className="text-gray-600">Tax (8%)</p>
-                  <p className="text-gray-900 font-medium">${tax.toFixed(2)}</p>
+                  <p className="text-gray-600">GST (18%)</p>
+                  <p className="text-gray-900 font-medium">{formatPrice(tax)}</p>
                 </div>
                 <div className="border-t pt-4 mt-4 flex justify-between">
                   <p className="text-lg font-medium text-gray-900">Total</p>
-                  <p className="text-lg font-bold text-gray-900">${total.toFixed(2)}</p>
+                  <p className="text-lg font-bold text-gray-900">{formatPrice(total)}</p>
                 </div>
               </div>
 
               <div className="mt-8">
-                <button className="w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium hover:bg-primary-700 transition">
+                <button 
+                  onClick={handleCheckout}
+                  className="w-full bg-primary-600 text-white py-3 px-4 rounded-md font-medium hover:bg-primary-700 transition"
+                >
                   Proceed to Checkout
                 </button>
               </div>
 
               <div className="mt-6">
                 <p className="text-sm text-gray-500 text-center">
-                  Free shipping on orders over $50
+                  Free shipping on orders over ₹5,000
                 </p>
               </div>
               
               <div className="mt-8 border-t border-gray-200 pt-6">
                 <div className="flex items-center">
                   <img 
-                    src="https://cdn.pixabay.com/photo/2021/09/22/22/46/credit-card-6648229_960_720.png" 
+                    src="https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg" 
                     alt="Payment Options" 
                     className="h-6 w-auto"
                   />
                   <p className="text-xs text-gray-500 ml-2">
-                    All major credit cards accepted
+                    Secure payment options available
                   </p>
                 </div>
               </div>
