@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRegion } from '../context/RegionContext';
 import BreadcrumbNav from '../components/shared/BreadcrumbNav';
 import { MapPin, CreditCard, Truck, Shield, Wallet } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const CheckoutPage: React.FC = () => {
   const { cart, clearCart } = useCart();
@@ -28,10 +29,47 @@ const CheckoutPage: React.FC = () => {
   useEffect(() => {
     if (!user) {
       navigate('/auth');
+      return;
     }
+    
     if (cart.length === 0) {
       navigate('/cart');
+      return;
     }
+
+    // Fetch user's saved address
+    const fetchUserAddress = async () => {
+      const { data: { user: userData }, error } = await supabase.auth.getUser();
+      
+      if (error) {
+        console.error('Error fetching user data:', error);
+        return;
+      }
+
+      if (userData?.user_metadata) {
+        const {
+          full_name,
+          addressLine1,
+          addressLine2,
+          city,
+          state,
+          pincode,
+          phone
+        } = userData.user_metadata;
+
+        setAddress({
+          fullName: full_name || '',
+          addressLine1: addressLine1 || '',
+          addressLine2: addressLine2 || '',
+          city: city || '',
+          state: state || '',
+          pincode: pincode || '',
+          phone: phone || ''
+        });
+      }
+    };
+
+    fetchUserAddress();
   }, [user, cart, navigate]);
 
   const subtotal = cart.reduce((sum, item) => {
@@ -56,14 +94,45 @@ const CheckoutPage: React.FC = () => {
     setError(null);
 
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // In a real application, you would:
-      // 1. Send order details to your backend
-      // 2. Create order in database
-      // 3. Send confirmation email
-      // 4. Handle inventory updates
+      // Save address to user metadata
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: {
+          full_name: address.fullName,
+          addressLine1: address.addressLine1,
+          addressLine2: address.addressLine2,
+          city: address.city,
+          state: address.state,
+          pincode: address.pincode,
+          phone: address.phone
+        }
+      });
+
+      if (updateError) throw updateError;
+
+      // Create order in the database
+      const { error: orderError } = await supabase
+        .from('orders')
+        .insert([
+          {
+            user_id: user?.id,
+            items: cart.map(item => ({
+              product_id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              discount: item.discount
+            })),
+            shipping_address: address,
+            payment_method: paymentMethod,
+            status: 'pending',
+            subtotal,
+            shipping,
+            tax,
+            total
+          }
+        ]);
+
+      if (orderError) throw orderError;
       
       clearCart();
       navigate('/order-success');
