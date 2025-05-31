@@ -13,8 +13,7 @@ const products: Product[] = [
     tags: ['drill', 'impact', 'professional'],
     images: [
       'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg',
-      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg',
-      'https://images.pexels.com/photos/4489731/pexels-photo-4489731.jpeg'
+      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
     ],
     specifications: {
       power: '1200W',
@@ -28,9 +27,7 @@ const products: Product[] = [
     rating: 4.8,
     reviews: 245,
     createdAt: '2024-05-01',
-    stock: 50,
-    colors: ['Red', 'Black'],
-    sizes: ['Standard']
+    stock: 50
   },
   {
     id: '2',
@@ -43,8 +40,7 @@ const products: Product[] = [
     tags: ['grinder', 'cordless', 'professional'],
     images: [
       'https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg',
-      'https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg',
-      'https://images.pexels.com/photos/4483608/pexels-photo-4483608.jpeg'
+      'https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg'
     ],
     specifications: {
       power: '18V',
@@ -58,72 +54,12 @@ const products: Product[] = [
     rating: 4.6,
     reviews: 182,
     createdAt: '2024-05-15',
-    stock: 35,
-    colors: ['Blue', 'Black'],
-    sizes: ['Standard']
-  },
-
-  // Industrial Equipment
-  {
-    id: '3',
-    name: 'Industrial Air Compressor',
-    price: 89999,
-    discount: 0,
-    description: 'High-capacity industrial air compressor with dual-stage compression.',
-    category: 'Industrial',
-    subcategory: 'Compressors',
-    tags: ['compressor', 'industrial', 'heavy-duty'],
-    images: [
-      'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
-      'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
-    ],
-    specifications: {
-      power: '5500W',
-      voltage: '400V',
-      weight: '125kg',
-      warranty: '3 years',
-      manufacturer: 'YariIndustrial',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.9,
-    reviews: 78,
-    createdAt: '2024-05-10',
-    stock: 15,
-    colors: ['Blue'],
-    sizes: ['Industrial']
-  },
-  {
-    id: '4',
-    name: 'Industrial Band Saw',
-    price: 149999,
-    discount: 5,
-    description: 'Heavy-duty metal cutting band saw for industrial applications.',
-    category: 'Industrial',
-    subcategory: 'Cutting Equipment',
-    tags: ['saw', 'industrial', 'metal cutting'],
-    images: [
-      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
-      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
-    ],
-    specifications: {
-      power: '2200W',
-      voltage: '400V',
-      weight: '320kg',
-      warranty: '2 years',
-      manufacturer: 'YariIndustrial',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.7,
-    reviews: 45,
-    createdAt: '2024-05-12',
-    stock: 8,
-    colors: ['Gray'],
-    sizes: ['Industrial']
+    stock: 35
   },
 
   // Safety Equipment
   {
-    id: '5',
+    id: '3',
     name: 'Premium Safety Helmet',
     price: 2499,
     discount: 0,
@@ -145,12 +81,10 @@ const products: Product[] = [
     rating: 4.7,
     reviews: 156,
     createdAt: '2024-05-20',
-    stock: 200,
-    colors: ['White', 'Yellow', 'Blue'],
-    sizes: ['S', 'M', 'L', 'XL']
+    stock: 200
   },
   {
-    id: '6',
+    id: '4',
     name: 'Cut Resistant Gloves',
     price: 999,
     discount: 5,
@@ -172,67 +106,61 @@ const products: Product[] = [
     rating: 4.5,
     reviews: 245,
     createdAt: '2024-05-22',
-    stock: 300,
-    colors: ['Gray', 'Black'],
-    sizes: ['S', 'M', 'L', 'XL']
+    stock: 300
   },
 
-  // New Arrivals (last 30 days)
+  // Industrial Equipment
   {
-    id: '7',
-    name: 'Advanced Power Drill Set',
-    price: 29999,
+    id: '5',
+    name: 'Industrial Air Compressor',
+    price: 89999,
     discount: 0,
-    description: 'Complete professional drill set with multiple attachments and carrying case.',
-    category: 'Power Tools',
-    subcategory: 'Power Tools',
-    tags: ['drill', 'professional', 'set'],
-    images: [
-      'https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg',
-      'https://images.pexels.com/photos/4489794/pexels-photo-4489794.jpeg'
-    ],
-    specifications: {
-      power: '1500W',
-      voltage: '230V',
-      weight: '3.2kg',
-      warranty: '3 years',
-      manufacturer: 'YariTools Pro',
-      countryOfOrigin: 'India'
-    },
-    rating: 4.9,
-    reviews: 45,
-    createdAt: '2024-05-25',
-    stock: 30,
-    colors: ['Red', 'Black'],
-    sizes: ['Standard']
-  },
-  {
-    id: '8',
-    name: 'Industrial Generator',
-    price: 199999,
-    discount: 0,
-    description: 'Heavy-duty industrial generator with automatic voltage regulation.',
-    category: 'Industrial',
-    subcategory: 'Power Generation',
-    tags: ['generator', 'industrial', 'power'],
+    description: 'High-capacity industrial air compressor with dual-stage compression.',
+    category: 'Industrial Equipment',
+    subcategory: 'Compressors',
+    tags: ['compressor', 'industrial', 'heavy-duty'],
     images: [
       'https://images.pexels.com/photos/210881/pexels-photo-210881.jpeg',
       'https://images.pexels.com/photos/2760243/pexels-photo-2760243.jpeg'
     ],
     specifications: {
-      power: '15000W',
+      power: '5500W',
       voltage: '400V',
-      weight: '280kg',
+      weight: '125kg',
       warranty: '3 years',
       manufacturer: 'YariIndustrial',
       countryOfOrigin: 'India'
     },
-    rating: 4.8,
-    reviews: 32,
-    createdAt: '2024-05-24',
-    stock: 5,
-    colors: ['Yellow'],
-    sizes: ['Industrial']
+    rating: 4.9,
+    reviews: 78,
+    createdAt: '2024-05-10',
+    stock: 15
+  },
+  {
+    id: '6',
+    name: 'Industrial Band Saw',
+    price: 149999,
+    discount: 5,
+    description: 'Heavy-duty metal cutting band saw for industrial applications.',
+    category: 'Industrial Equipment',
+    subcategory: 'Cutting Equipment',
+    tags: ['saw', 'industrial', 'metal cutting'],
+    images: [
+      'https://images.pexels.com/photos/3846159/pexels-photo-3846159.jpeg',
+      'https://images.pexels.com/photos/3846160/pexels-photo-3846160.jpeg'
+    ],
+    specifications: {
+      power: '2200W',
+      voltage: '400V',
+      weight: '320kg',
+      warranty: '2 years',
+      manufacturer: 'YariIndustrial',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.7,
+    reviews: 45,
+    createdAt: '2024-05-12',
+    stock: 8
   }
 ];
 
@@ -264,8 +192,7 @@ export const getProductsByCategory = (category: string): Product[] => {
   if (category === 'sale') {
     return products
       .filter(product => product.discount > 0)
-      .sort((a, b) => b.discount - a.discount)
-      .slice(0, 4);
+      .sort((a, b) => b.discount - a.discount);
   }
 
   // Convert category to lowercase and replace hyphens with spaces for comparison
