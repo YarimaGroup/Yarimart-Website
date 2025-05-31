@@ -11,6 +11,8 @@ import LocationsPage from './pages/LocationsPage';
 import CareersPage from './pages/CareersPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsPage from './pages/TermsPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
@@ -29,6 +31,8 @@ function App() {
                   <Route path="/catalog/:category?" element={<CatalogPage />} />
                   <Route path="/product/:id" element={<ProductPage />} />
                   <Route path="/cart" element={<CartPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/order-success" element={<OrderSuccessPage />} />
                   <Route path="/auth" element={<AuthPage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/locations" element={<LocationsPage />} />
