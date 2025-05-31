@@ -33,14 +33,19 @@ const AdminCustomers: React.FC = () => {
   const fetchCustomers = async () => {
     setLoading(true);
     try {
-      // Fetch users from Supabase Auth
-      const { data: users, error: usersError } = await supabase.auth.admin.listUsers();
+      // Use the auth API to fetch users
+      const { data, error } = await supabase.auth.admin.listUsers();
       
-      if (usersError) throw usersError;
+      if (error) throw error;
+      
+      if (!data) {
+        setCustomers([]);
+        return;
+      }
       
       // Fetch order data for each user
       const customerData = await Promise.all(
-        users.users.map(async (user) => {
+        data.users.map(async (user) => {
           // Get order count and total spent
           const { data: orders, error: ordersError } = await supabase
             .from('orders')
@@ -70,6 +75,7 @@ const AdminCustomers: React.FC = () => {
       setCustomers(customerData);
     } catch (error) {
       console.error('Error fetching customers:', error);
+      setCustomers([]);
     } finally {
       setLoading(false);
     }

@@ -36,12 +36,8 @@ const setupAdmins = async () => {
     for (const admin of ADMIN_USERS) {
       console.log(`Processing admin user: ${admin.email}`);
       
-      // First check if user already exists
-      const { data: existingUsers, error: lookupError } = await supabase
-        .from('auth.users')
-        .select('id, email')
-        .eq('email', admin.email)
-        .maybeSingle();
+      // First check if user already exists using the auth API
+      const { data: existingUser, error: lookupError } = await supabase.auth.admin.getUserByEmail(admin.email);
 
       if (lookupError) {
         console.error(`Error looking up user ${admin.email}:`, lookupError);
@@ -50,9 +46,9 @@ const setupAdmins = async () => {
       
       let userId;
       
-      if (existingUsers) {
+      if (existingUser?.user) {
         console.log(`User ${admin.email} already exists, updating...`);
-        userId = existingUsers.id;
+        userId = existingUser.user.id;
         
         // Update the user's password
         const { error: updateError } = await supabase.auth.admin.updateUserById(
