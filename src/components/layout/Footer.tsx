@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 text-white dark:bg-gray-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold">Yarimart</h3>
@@ -72,38 +72,6 @@ const Footer: React.FC = () => {
               <li>
                 <Link to="/catalog/spare-parts" className="text-gray-300 hover:text-white transition text-sm">
                   Spare Parts
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-medium mb-4">{t('footer.services')}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/equipment-rental" className="text-gray-300 hover:text-white transition text-sm">
-                  Equipment Rental
-                </Link>
-              </li>
-              <li>
-                <Link to="/repair-service" className="text-gray-300 hover:text-white transition text-sm">
-                  Repair Service
-                </Link>
-              </li>
-              <li>
-                <Link to="/bulk-orders" className="text-gray-300 hover:text-white transition text-sm">
-                  Bulk Orders
-                </Link>
-              </li>
-              <li>
-                <Link to="/technical-support" className="text-gray-300 hover:text-white transition text-sm">
-                  Technical Support
-                </Link>
-              </li>
-              <li>
-                <Link to="/warranty" className="text-gray-300 hover:text-white transition text-sm">
-                  Warranty Information
                 </Link>
               </li>
             </ul>
