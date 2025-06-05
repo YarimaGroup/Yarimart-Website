@@ -6,51 +6,6 @@ import { useLanguage } from '../context/LanguageContext';
 const CareersPage: React.FC = () => {
   const { t } = useLanguage();
   
-  const openings = [
-    {
-      id: 1,
-      title: 'Sales Manager',
-      location: 'Kochi, Kerala',
-      type: 'Full-time',
-      salary: '5-8 LPA',
-      description: 'Looking for an experienced Sales Manager to lead our B2B sales team.',
-      requirements: [
-        'Minimum 5 years of experience in industrial sales',
-        'Strong leadership and communication skills',
-        'Experience in team management',
-        'Knowledge of industrial tools and equipment'
-      ]
-    },
-    {
-      id: 2,
-      title: 'Technical Support Engineer',
-      location: 'Trivandrum, Kerala',
-      type: 'Full-time',
-      salary: '3-5 LPA',
-      description: 'Seeking a Technical Support Engineer to assist customers with product inquiries.',
-      requirements: [
-        'Degree in Mechanical/Electrical Engineering',
-        'Good knowledge of industrial tools',
-        'Strong problem-solving skills',
-        'Excellent customer service skills'
-      ]
-    },
-    {
-      id: 3,
-      title: 'Inventory Manager',
-      location: 'Calicut, Kerala',
-      type: 'Full-time',
-      salary: '4-6 LPA',
-      description: 'Looking for an Inventory Manager to oversee warehouse operations.',
-      requirements: [
-        'Experience in inventory management',
-        'Knowledge of warehouse management systems',
-        'Strong organizational skills',
-        'Team management experience'
-      ]
-    }
-  ];
-
   const benefits = [
     'Competitive salary package',
     'Health insurance coverage',
@@ -89,50 +44,27 @@ const CareersPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Current Openings */}
-      <div>
+      {/* No Current Openings */}
+      <div className="mb-12">
         <h2 className="text-2xl font-bold mb-8 dark:text-white">Current Openings</h2>
-        <div className="space-y-6">
-          {openings.map((job) => (
-            <div key={job.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">{job.title}</h3>
-                  <div className="mt-2 flex flex-wrap gap-4">
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {job.location}
-                    </div>
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {job.type}
-                    </div>
-                    <div className="flex items-center text-gray-600 dark:text-gray-400">
-                      <IndianRupee className="w-4 h-4 mr-1" />
-                      {job.salary}
-                    </div>
-                  </div>
-                </div>
-                <button className="bg-primary-600 dark:bg-primary-700 text-white px-6 py-2 rounded-md hover:bg-primary-700 dark:hover:bg-primary-600 transition">
-                  Apply Now
-                </button>
-              </div>
-
-              <p className="mt-4 text-gray-600 dark:text-gray-300">{job.description}</p>
-
-              <div className="mt-4">
-                <h4 className="font-semibold text-gray-900 dark:text-white">Requirements:</h4>
-                <ul className="mt-2 space-y-2 dark:text-gray-300">
-                  {job.requirements.map((req, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="mr-2">•</span>
-                      <span>{req}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+          <div className="mx-auto w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+            <Briefcase className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+          </div>
+          <h3 className="text-xl font-semibold mb-2 dark:text-white">No Active Openings</h3>
+          <p className="text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
+            We don't have any open positions at the moment, but we're always looking for talented individuals to join our team.
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-4">
+            Please check back later or send your resume to our HR team to be considered for future opportunities.
+          </p>
+          <a
+            href="mailto:careers@yarimart.com"
+            className="inline-flex items-center px-6 py-3 mt-6 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600"
+          >
+            <Briefcase className="w-5 h-5 mr-2" />
+            Send Your Resume
+          </a>
         </div>
       </div>
 
@@ -168,7 +100,7 @@ const CareersPage: React.FC = () => {
       <div className="mt-12 text-center">
         <h2 className="text-2xl font-bold mb-4 dark:text-white">Questions?</h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Contact our HR team for any queries about our openings or application process
+          Contact our HR team for any queries about future openings or application process
         </p>
         <a
           href="mailto:careers@yarimart.com"
