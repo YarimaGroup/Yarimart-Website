@@ -47,7 +47,7 @@ const FeaturedProducts = () => {
                 <li>Create a <code className="bg-gray-100 px-1 rounded">.env</code> file in your project root (or edit if it exists)</li>
                 <li>Add your Supabase URL: <code className="bg-gray-100 px-1 rounded">VITE_SUPABASE_URL=your_supabase_project_url</code></li>
                 <li>Add your Supabase Anon Key: <code className="bg-gray-100 px-1 rounded">VITE_SUPABASE_ANON_KEY=your_supabase_anon_key</code></li>
-                <li>Find these values in your Supabase dashboard under Project Settings > API</li>
+                <li>Find these values in your Supabase dashboard under Project Settings &gt; API</li>
                 <li>Restart your development server</li>
               </ol>
             </div>
