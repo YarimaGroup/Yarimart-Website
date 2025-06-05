@@ -126,9 +126,9 @@ const AdminSettings: React.FC = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                 >
                   {showCurrentPassword ? (
-                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                    <EyeOff className="h-5 w-5\" aria-hidden="true" />
                   ) : (
-                    <Eye className="h-5 w-5" aria-hidden="true" />
+                    <Eye className="h-5 w-5\" aria-hidden="true" />
                   )}
                 </button>
               </div>
@@ -153,9 +153,9 @@ const AdminSettings: React.FC = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                 >
                   {showNewPassword ? (
-                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                    <EyeOff className="h-5 w-5\" aria-hidden="true" />
                   ) : (
-                    <Eye className="h-5 w-5" aria-hidden="true" />
+                    <Eye className="h-5 w-5\" aria-hidden="true" />
                   )}
                 </button>
               </div>
@@ -180,9 +180,9 @@ const AdminSettings: React.FC = () => {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5" aria-hidden="true" />
+                    <EyeOff className="h-5 w-5\" aria-hidden="true" />
                   ) : (
-                    <Eye className="h-5 w-5" aria-hidden="true" />
+                    <Eye className="h-5 w-5\" aria-hidden="true" />
                   )}
                 </button>
               </div>
