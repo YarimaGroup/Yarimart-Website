@@ -48,9 +48,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         // Check if user is an admin
         if (session?.user) {
-          const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
+          const userEmail = session.user.email || '';
+          const userIsAdmin = ADMIN_EMAILS.includes(userEmail);
           setIsAdmin(userIsAdmin);
-          console.log(`User authenticated, admin status: ${userIsAdmin}, email: ${session.user.email}`);
+          console.log(`User authenticated, admin status: ${userIsAdmin}, email: ${userEmail}`);
         } else {
           setIsAdmin(false);
           console.log('No active user session');
@@ -66,9 +67,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         // Check if user is an admin
         if (session?.user) {
-          const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
+          const userEmail = session.user.email || '';
+          const userIsAdmin = ADMIN_EMAILS.includes(userEmail);
           setIsAdmin(userIsAdmin);
-          console.log(`Auth state changed, admin status: ${userIsAdmin}, email: ${session.user.email}`);
+          console.log(`Auth state changed, admin status: ${userIsAdmin}, email: ${userEmail}`);
         } else {
           setIsAdmin(false);
           console.log('Auth state changed: No user');

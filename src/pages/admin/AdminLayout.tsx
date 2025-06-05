@@ -1,24 +1,29 @@
 import React, { useEffect } from 'react';
-import { Outlet, useNavigate, Link } from 'react-router-dom';
+import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Settings, Package, Users, Layers, ShoppingBag, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminLayout: React.FC = () => {
   const { user, signOut, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Check if user has admin role
   useEffect(() => {
     const checkAdminAccess = async () => {
       if (!user) {
+        console.log('No user found, redirecting to auth page');
         navigate('/auth');
         return;
       }
       
       if (!isAdmin) {
+        console.log('User is not an admin, redirecting to home');
         navigate('/');
         return;
       }
+
+      console.log('Admin access confirmed');
     };
     
     checkAdminAccess();
@@ -49,7 +54,7 @@ const AdminLayout: React.FC = () => {
           <nav className="mt-5 px-2">
             {navigationItems.map((item) => {
               const Icon = item.icon;
-              const isActive = window.location.pathname === item.path;
+              const isActive = location.pathname === item.path;
               
               return (
                 <Link
@@ -85,7 +90,7 @@ const AdminLayout: React.FC = () => {
         <header className="bg-white dark:bg-gray-800 shadow-sm">
           <div className="px-4 sm:px-6 lg:px-8 py-4">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {navigationItems.find(item => window.location.pathname === item.path)?.name || 'Admin'}
+              {navigationItems.find(item => location.pathname === item.path)?.name || 'Admin'}
             </h2>
           </div>
         </header>

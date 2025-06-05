@@ -3,6 +3,36 @@ import { supabase } from '../../lib/supabase';
 import { Search, Plus, Edit, Trash2, AlertCircle, Star } from 'lucide-react';
 import { Product } from '../../types/product';
 
+interface ProductFormData {
+  name: string;
+  price: number;
+  discount: number;
+  description: string;
+  category: string;
+  subcategory: string;
+  tags: string;
+  images: string;
+  colors: string;
+  sizes: string;
+  specifications: string;
+  stock: number;
+}
+
+const initialFormData: ProductFormData = {
+  name: '',
+  price: 0,
+  discount: 0,
+  description: '',
+  category: '',
+  subcategory: '',
+  tags: '',
+  images: '',
+  colors: '',
+  sizes: '',
+  specifications: '',
+  stock: 0
+};
+
 const AdminProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +42,12 @@ const AdminProducts: React.FC = () => {
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  
+  // Add product form state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [formData, setFormData] = useState<ProductFormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -72,6 +108,62 @@ const AdminProducts: React.FC = () => {
     }
   };
 
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleAddProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(null);
+    setIsSubmitting(true);
+
+    try {
+      // Convert string inputs to appropriate formats
+      const productData = {
+        name: formData.name,
+        price: Number(formData.price),
+        discount: Number(formData.discount),
+        description: formData.description,
+        category: formData.category,
+        subcategory: formData.subcategory || null,
+        tags: formData.tags.split(',').map(tag => tag.trim()),
+        images: formData.images.split(',').map(url => url.trim()),
+        colors: formData.colors ? formData.colors.split(',').map(color => color.trim()) : null,
+        sizes: formData.sizes ? formData.sizes.split(',').map(size => size.trim()) : null,
+        specifications: formData.specifications ? JSON.parse(formData.specifications) : {},
+        details: {},
+        rating: 0,
+        reviews: 0,
+        stock: Number(formData.stock),
+        created_at: new Date().toISOString()
+      };
+
+      // Insert the new product
+      const { data, error } = await supabase
+        .from('products')
+        .insert([productData])
+        .select();
+
+      if (error) throw error;
+
+      // Update product list
+      setProducts([...(data as Product[]), ...products]);
+      setIsAddModalOpen(false);
+      setFormData(initialFormData);
+    } catch (error) {
+      console.error('Error adding product:', error);
+      setFormError(error instanceof Error ? error.message : 'Failed to add product');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const filteredProducts = products.filter(product => {
     const searchString = searchQuery.toLowerCase();
     return (
@@ -118,7 +210,10 @@ const AdminProducts: React.FC = () => {
             ))}
           </select>
           
-          <button className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md transition dark:bg-primary-700 dark:hover:bg-primary-600">
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md transition dark:bg-primary-700 dark:hover:bg-primary-600"
+          >
             <Plus className="h-5 w-5" />
             <span>Add Product</span>
           </button>
@@ -286,6 +381,281 @@ const AdminProducts: React.FC = () => {
                   Cancel
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Product Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={() => !isSubmitting && setIsAddModalOpen(false)}></div>
+            
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <form onSubmit={handleAddProduct}>
+                <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6">
+                  <div className="mb-4">
+                    <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                      Add New Product
+                    </h3>
+                    {formError && (
+                      <div className="mt-2 text-sm text-red-600 dark:text-red-400">
+                        {formError}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div className="sm:col-span-4">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Product Name
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="name"
+                          id="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          required
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Price (₹)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="number"
+                          name="price"
+                          id="price"
+                          min="0"
+                          step="0.01"
+                          value={formData.price}
+                          onChange={handleInputChange}
+                          required
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label htmlFor="discount" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Discount (%)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="number"
+                          name="discount"
+                          id="discount"
+                          min="0"
+                          max="100"
+                          value={formData.discount}
+                          onChange={handleInputChange}
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label htmlFor="stock" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Stock
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="number"
+                          name="stock"
+                          id="stock"
+                          min="0"
+                          value={formData.stock}
+                          onChange={handleInputChange}
+                          required
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Category
+                      </label>
+                      <div className="mt-1">
+                        <select
+                          id="category"
+                          name="category"
+                          value={formData.category}
+                          onChange={handleInputChange}
+                          required
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map(category => (
+                            <option key={category} value={category}>{category}</option>
+                          ))}
+                          <option value="Power Tools">Power Tools</option>
+                          <option value="Hand Tools">Hand Tools</option>
+                          <option value="Safety Equipment">Safety Equipment</option>
+                          <option value="Industrial Equipment">Industrial Equipment</option>
+                          <option value="Spare Parts">Spare Parts</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label htmlFor="subcategory" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Subcategory
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="subcategory"
+                          id="subcategory"
+                          value={formData.subcategory}
+                          onChange={handleInputChange}
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-6">
+                      <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Description
+                      </label>
+                      <div className="mt-1">
+                        <textarea
+                          id="description"
+                          name="description"
+                          rows={3}
+                          value={formData.description}
+                          onChange={handleInputChange}
+                          required
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-6">
+                      <label htmlFor="images" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Images (URLs, comma-separated)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="images"
+                          id="images"
+                          value={formData.images}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Enter image URLs separated by commas. At least one image is required.
+                      </p>
+                    </div>
+
+                    <div className="sm:col-span-6">
+                      <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Tags (comma-separated)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="tags"
+                          id="tags"
+                          value={formData.tags}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="power, tool, professional"
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label htmlFor="colors" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Colors (comma-separated, optional)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="colors"
+                          id="colors"
+                          value={formData.colors}
+                          onChange={handleInputChange}
+                          placeholder="Red, Blue, Black"
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label htmlFor="sizes" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Sizes (comma-separated, optional)
+                      </label>
+                      <div className="mt-1">
+                        <input
+                          type="text"
+                          name="sizes"
+                          id="sizes"
+                          value={formData.sizes}
+                          onChange={handleInputChange}
+                          placeholder="S, M, L or 10mm, 12mm"
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-6">
+                      <label htmlFor="specifications" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Specifications (JSON format, optional)
+                      </label>
+                      <div className="mt-1">
+                        <textarea
+                          id="specifications"
+                          name="specifications"
+                          rows={3}
+                          value={formData.specifications}
+                          onChange={handleInputChange}
+                          placeholder='{"power": "1200W", "weight": "2.5kg", "warranty": "2 years"}'
+                          className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white"
+                        />
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Enter specifications in JSON format.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm dark:bg-primary-700 dark:hover:bg-primary-600 ${
+                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isSubmitting ? 'Adding...' : 'Add Product'}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => setIsAddModalOpen(false)}
+                    className={`mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm ${
+                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
