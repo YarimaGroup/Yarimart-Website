@@ -37,8 +37,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Only run auth checks if Supabase is configured
     if (isSupabaseConfigured()) {
+      console.log('Checking Supabase auth session...');
+      
       // Check active sessions and sets the user
       supabase.auth.getSession().then(({ data: { session } }) => {
+        console.log('Session retrieved:', session ? 'yes' : 'no');
         setUser(session?.user ?? null);
         
         // Check if user is an admin
@@ -55,13 +58,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Listen for changes on auth state
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        console.log('Auth state changed:', _event);
         setUser(session?.user ?? null);
         
         // Check if user is an admin
         if (session?.user) {
           const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
           setIsAdmin(userIsAdmin);
-          console.log("Auth state changed, admin status:", userIsAdmin);
+          console.log("Auth state changed, admin status:", userIsAdmin, "email:", session.user.email);
         } else {
           setIsAdmin(false);
         }
@@ -71,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       return () => subscription.unsubscribe();
     } else {
+      console.log('Supabase is not configured');
       // If Supabase is not configured, just set loading to false
       setLoading(false);
     }
@@ -82,11 +87,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error('Authentication service is not available');
     }
     
-    const { error } = await supabase.auth.signUp({
+    console.log(`Attempting to sign up: ${email}`);
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
-    if (error) throw error;
+    
+    if (error) {
+      console.error("Sign up error:", error.message);
+      throw error;
+    }
+    
+    console.log("Sign up response:", data);
   };
 
   const signIn = async (email: string, password: string) => {
@@ -97,21 +109,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     console.log(`Attempting to sign in: ${email}`);
     
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
-      console.error("Sign in error:", error.message);
-      throw error;
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        console.error("Sign in error:", error.message);
+        throw error;
+      }
+      
+      console.log("Sign in successful:", data.user?.email);
+      
+      // Check if user is admin
+      const userIsAdmin = ADMIN_EMAILS.includes(email);
+      setIsAdmin(userIsAdmin);
+      console.log("User is admin:", userIsAdmin);
+      
+      return data;
+    } catch (err) {
+      console.error("Sign in exception:", err);
+      throw err;
     }
-    
-    console.log("Sign in successful:", data.user?.email);
-    
-    // Check if user is admin
-    const userIsAdmin = ADMIN_EMAILS.includes(email);
-    setIsAdmin(userIsAdmin);
   };
 
   const signOut = async () => {
@@ -120,6 +140,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error('Authentication service is not available');
     }
     
+    console.log("Signing out");
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };

@@ -34,6 +34,9 @@ if (!supabaseServiceKey) {
   process.exit(1);
 }
 
+console.log(`Using Supabase URL: ${supabaseUrl}`);
+console.log(`Service role key is ${supabaseServiceKey.length} characters long`);
+
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
@@ -51,73 +54,71 @@ const ADMIN_USERS = [
 const setupAdmins = async () => {
   try {
     console.log('Starting admin setup process...');
+    console.log(`Will set up ${ADMIN_USERS.length} admin users`);
 
     for (const admin of ADMIN_USERS) {
       console.log(`Processing admin user: ${admin.email}`);
       
-      // Check if user already exists
-      const { data: users, error: lookupError } = await supabase.auth.admin.listUsers();
-      
-      if (lookupError) {
-        console.error(`Error looking up users:`, lookupError);
-        continue;
-      }
-      
-      const existingUser = users?.users?.find(user => user.email === admin.email);
-      let userId;
-      
-      if (existingUser) {
-        console.log(`User ${admin.email} already exists, updating...`);
-        userId = existingUser.id;
+      try {
+        // First try to create a new user
+        console.log(`Attempting to create new user for ${admin.email}`);
         
-        // Update the user's password
-        const { error: updateError } = await supabase.auth.admin.updateUserById(
-          userId,
-          { password: admin.password }
-        );
-        
-        if (updateError) {
-          console.error(`Error updating password for ${admin.email}:`, updateError);
-          continue;
-        }
-        
-        console.log(`Password updated for ${admin.email}`);
-      } else {
-        console.log(`Creating new admin user: ${admin.email}`);
-        
-        // Create the user with the admin role
         const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
           email: admin.email,
           password: admin.password,
-          email_confirm: true, // Auto-confirm the email
+          email_confirm: true,
           user_metadata: { role: 'admin' },
           app_metadata: { role: 'admin' }
         });
         
         if (createError) {
-          console.error(`Error creating user ${admin.email}:`, createError);
-          continue;
+          if (createError.message.includes('already exists')) {
+            console.log(`User ${admin.email} already exists, updating...`);
+            
+            // Get user by email
+            const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers();
+            
+            if (getUserError) {
+              console.error(`Error getting user list:`, getUserError);
+              continue;
+            }
+            
+            const existingUser = users?.find(user => user.email === admin.email);
+            
+            if (!existingUser) {
+              console.error(`Could not find user ${admin.email} in the user list`);
+              continue;
+            }
+            
+            // Update the user's password
+            console.log(`Updating password for ${admin.email}`);
+            const { error: updateError } = await supabase.auth.admin.updateUserById(
+              existingUser.id,
+              { 
+                password: admin.password,
+                user_metadata: { role: 'admin' },
+                app_metadata: { role: 'admin' }
+              }
+            );
+            
+            if (updateError) {
+              console.error(`Error updating user ${admin.email}:`, updateError);
+              continue;
+            }
+            
+            console.log(`Updated user ${admin.email} successfully`);
+          } else {
+            console.error(`Error creating user ${admin.email}:`, createError);
+            continue;
+          }
+        } else {
+          console.log(`Created new admin user ${admin.email} with ID: ${newUser.user.id}`);
         }
         
-        console.log(`Admin user ${admin.email} created successfully`);
-        userId = newUser.user.id;
+        console.log(`Admin user ${admin.email} set up successfully`);
+      } catch (userError) {
+        console.error(`Unexpected error processing user ${admin.email}:`, userError);
       }
-      
-      // Update metadata to ensure admin role is set
-      const { error: metadataError } = await supabase.auth.admin.updateUserById(
-        userId,
-        {
-          user_metadata: { role: 'admin' },
-          app_metadata: { role: 'admin' }
-        }
-      );
-      
-      if (metadataError) {
-        console.error(`Error setting admin role for ${admin.email}:`, metadataError);
-        continue;
-      }
-      
-      console.log(`Successfully set up admin user: ${admin.email}`);
     }
 
     console.log('Admin setup process completed.');
@@ -126,4 +127,13 @@ const setupAdmins = async () => {
   }
 };
 
-setupAdmins().catch(console.error);
+console.log('Starting admin setup script');
+setupAdmins()
+  .then(() => {
+    console.log('Admin setup script completed successfully');
+    process.exit(0);
+  })
+  .catch(error => {
+    console.error('Admin setup script failed:', error);
+    process.exit(1);
+  });
