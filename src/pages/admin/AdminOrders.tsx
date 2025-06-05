@@ -14,7 +14,6 @@ interface Order {
   tax: number;
   total: number;
   created_at: string;
-  user?: { email: string } | null;
 }
 
 const AdminOrders: React.FC = () => {
@@ -37,7 +36,7 @@ const AdminOrders: React.FC = () => {
     try {
       let query = supabase
         .from('orders')
-        .select('*, user:user_id(email)');
+        .select('*');
       
       if (statusFilter !== 'all') {
         query = query.eq('status', statusFilter);
@@ -96,7 +95,6 @@ const AdminOrders: React.FC = () => {
     const searchString = searchQuery.toLowerCase();
     return (
       order.id.toLowerCase().includes(searchString) ||
-      order.user?.email?.toLowerCase().includes(searchString) ||
       order.shipping_address.fullName.toLowerCase().includes(searchString) ||
       order.status.toLowerCase().includes(searchString)
     );
@@ -227,7 +225,7 @@ const AdminOrders: React.FC = () => {
                       {order.id.slice(0, 8)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {order.user?.email || order.shipping_address.fullName}
+                      {order.shipping_address.fullName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {formatDate(order.created_at)}
@@ -287,7 +285,6 @@ const AdminOrders: React.FC = () => {
                         <div>
                           <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Customer Information</h4>
                           <p className="text-sm text-gray-900 dark:text-white">{selectedOrder.shipping_address.fullName}</p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{selectedOrder.user?.email}</p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">{selectedOrder.shipping_address.phone}</p>
                         </div>
                         <div>

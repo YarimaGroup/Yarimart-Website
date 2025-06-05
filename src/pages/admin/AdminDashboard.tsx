@@ -41,7 +41,7 @@ const AdminDashboard: React.FC = () => {
         // Fetch recent orders
         const { data: recent, error: recentError } = await supabase
           .from('orders')
-          .select('*, user:user_id(email)')
+          .select('*')
           .order('created_at', { ascending: false })
           .limit(5);
           
@@ -187,7 +187,7 @@ const AdminDashboard: React.FC = () => {
                       {order.id.slice(0, 8)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {order.user?.email || order.shipping_address.fullName}
+                      {order.shipping_address.fullName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {formatDate(order.created_at)}
