@@ -17,7 +17,7 @@ console.log(`Supabase URL: ${supabaseUrl}`);
 console.log(`Supabase Anon Key provided: ${supabaseAnonKey !== 'example-key'}`);
 
 // Create the Supabase client with explicit auth configuration
-export const supabase = createClient(`https://${supabaseUrl}`, supabaseAnonKey, {
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
