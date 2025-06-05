@@ -1,151 +1,112 @@
-import { supabase } from '../lib/supabase';
-import { Product } from '../types/product';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import type { Product } from '../types/product';
 
-// This function now fetches products from Supabase instead of using local data
-export const getProducts = async (): Promise<Product[]> => {
+/**
+ * Fetches all products from the database
+ */
+export const getAllProducts = async (): Promise<Product[]> => {
   try {
+    // Check if Supabase is configured properly
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not properly configured. Please check your .env file.');
+    }
+
     const { data, error } = await supabase
       .from('products')
       .select('*');
-      
+
     if (error) {
       console.error('Error fetching products:', error);
-      return [];
+      throw new Error(`Failed to fetch products: ${error.message}`);
     }
-    
-    return data as Product[];
+
+    return data || [];
   } catch (error) {
-    console.error('Error in getProducts:', error);
-    return [];
+    console.error('Error in getAllProducts:', error);
+    throw error;
   }
 };
 
-// Get a product by ID from Supabase
+/**
+ * Fetches a specific product by ID
+ */
 export const getProductById = async (id: string): Promise<Product | null> => {
   try {
+    // Check if Supabase is configured properly
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not properly configured. Please check your .env file.');
+    }
+
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .eq('id', id)
       .single();
-      
+
     if (error) {
-      console.error('Error fetching product:', error);
-      return null;
+      console.error(`Error fetching product with ID ${id}:`, error);
+      throw new Error(`Failed to fetch product: ${error.message}`);
     }
-    
-    return data as Product;
+
+    return data;
   } catch (error) {
-    console.error('Error in getProductById:', error);
-    return null;
+    console.error(`Error in getProductById for ID ${id}:`, error);
+    throw error;
   }
 };
 
-// Get products by category from Supabase
+/**
+ * Fetches products by category
+ */
 export const getProductsByCategory = async (category: string): Promise<Product[]> => {
   try {
-    if (category === 'new') {
-      // Get products from the last 30 days
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .gte('created_at', thirtyDaysAgo.toISOString())
-        .order('created_at', { ascending: false });
-        
-      if (error) {
-        console.error('Error fetching new products:', error);
-        return [];
-      }
-      
-      return data as Product[];
+    // Check if Supabase is configured properly
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not properly configured. Please check your .env file.');
     }
 
-    if (category === 'featured') {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('rating', { ascending: false })
-        .limit(8);
-        
-      if (error) {
-        console.error('Error fetching featured products:', error);
-        return [];
-      }
-      
-      return data as Product[];
-    }
-
-    if (category === 'sale') {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .gt('discount', 0)
-        .order('discount', { ascending: false });
-        
-      if (error) {
-        console.error('Error fetching sale products:', error);
-        return [];
-      }
-      
-      return data as Product[];
-    }
-
-    // If no specific category or empty string, return all products
-    if (!category || category === '') {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-        
-      if (error) {
-        console.error('Error fetching all products:', error);
-        return [];
-      }
-      
-      return data as Product[];
-    }
-
-    // Convert category to lowercase and replace hyphens with spaces for comparison
-    const normalizedCategory = category.toLowerCase().replace(/-/g, ' ');
-    
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .ilike('category', `%${normalizedCategory}%`);
-      
+      .eq('category', category);
+
     if (error) {
-      console.error('Error fetching products by category:', error);
-      return [];
+      console.error(`Error fetching products in category ${category}:`, error);
+      throw new Error(`Failed to fetch products by category: ${error.message}`);
     }
-    
-    return data as Product[];
+
+    return data || [];
   } catch (error) {
-    console.error('Error in getProductsByCategory:', error);
-    return [];
+    console.error(`Error in getProductsByCategory for category ${category}:`, error);
+    throw error;
   }
 };
 
-// Get related products from Supabase
-export const getRelatedProducts = async (productId: string, category: string): Promise<Product[]> => {
+/**
+ * Fetches featured products (can be customized based on your business logic)
+ */
+export const getFeaturedProducts = async (): Promise<Product[]> => {
   try {
+    // Check if Supabase is configured properly
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not properly configured. Please check your .env file.');
+    }
+
+    // Logic to fetch featured products - adjust as needed for your application
     const { data, error } = await supabase
       .from('products')
       .select('*')
-      .eq('category', category)
-      .neq('id', productId)
-      .limit(4);
-      
+      .order('rating', { ascending: false })
+      .limit(8);
+
     if (error) {
-      console.error('Error fetching related products:', error);
-      return [];
+      console.error('Error fetching featured products:', error);
+      throw new Error(`Failed to fetch featured products: ${error.message}`);
     }
-    
-    return data as Product[];
+
+    return data || [];
   } catch (error) {
-    console.error('Error in getRelatedProducts:', error);
-    return [];
+    console.error('Error in getFeaturedProducts:', error);
+    throw error;
   }
 };
