@@ -35,6 +35,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Auth Provider initialized');
+    
     // Only run auth checks if Supabase is configured
     if (isSupabaseConfigured()) {
       console.log('Checking Supabase auth session...');
@@ -48,26 +50,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (session?.user) {
           const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
           setIsAdmin(userIsAdmin);
-          console.log("User authenticated, admin status:", userIsAdmin);
+          console.log(`User authenticated, admin status: ${userIsAdmin}, email: ${session.user.email}`);
         } else {
           setIsAdmin(false);
+          console.log('No active user session');
         }
         
         setLoading(false);
       });
 
       // Listen for changes on auth state
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        console.log('Auth state changed:', _event);
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+        console.log(`Auth state changed: ${event}`);
         setUser(session?.user ?? null);
         
         // Check if user is an admin
         if (session?.user) {
           const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
           setIsAdmin(userIsAdmin);
-          console.log("Auth state changed, admin status:", userIsAdmin, "email:", session.user.email);
+          console.log(`Auth state changed, admin status: ${userIsAdmin}, email: ${session.user.email}`);
         } else {
           setIsAdmin(false);
+          console.log('Auth state changed: No user');
         }
         
         setLoading(false);
@@ -75,7 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       return () => subscription.unsubscribe();
     } else {
-      console.log('Supabase is not configured');
+      console.error('Supabase is not properly configured');
       // If Supabase is not configured, just set loading to false
       setLoading(false);
     }
@@ -110,24 +114,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log(`Attempting to sign in: ${email}`);
     
     try {
+      // First check if this is an admin email
+      const isAdminUser = ADMIN_EMAILS.includes(email);
+      console.log(`Is admin email: ${isAdminUser}`);
+      
+      // Sign in with password
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
       if (error) {
-        console.error("Sign in error:", error.message);
+        console.error("Sign in error:", error);
         throw error;
       }
       
       console.log("Sign in successful:", data.user?.email);
       
-      // Check if user is admin
-      const userIsAdmin = ADMIN_EMAILS.includes(email);
-      setIsAdmin(userIsAdmin);
-      console.log("User is admin:", userIsAdmin);
+      // Update admin status
+      setIsAdmin(isAdminUser);
+      console.log(`Setting admin status to: ${isAdminUser}`);
       
-      return data;
+      return;
     } catch (err) {
       console.error("Sign in exception:", err);
       throw err;
@@ -142,7 +150,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     console.log("Signing out");
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    if (error) {
+      console.error("Sign out error:", error);
+      throw error;
+    }
+    
+    console.log("Sign out successful");
+    setIsAdmin(false);
   };
 
   return (

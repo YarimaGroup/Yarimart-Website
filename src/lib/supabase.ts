@@ -8,18 +8,21 @@ const getEnvVariable = (key: string, defaultValue: string): string => {
   return process.env[key] || defaultValue;
 };
 
-// Get Supabase URL and anonymous key from environment variables
+// Default values for development to prevent crashes
 const supabaseUrl = getEnvVariable('VITE_SUPABASE_URL', 'https://example.supabase.co');
 const supabaseAnonKey = getEnvVariable('VITE_SUPABASE_ANON_KEY', 'example-key');
 
-// Log the configuration
-console.log(`Initializing Supabase client with URL: ${supabaseUrl}`);
-console.log(`Anon key exists: ${supabaseAnonKey !== 'example-key'}`);
+// Log the configuration for debugging
+console.log(`Supabase URL: ${supabaseUrl}`);
+console.log(`Supabase Anon Key provided: ${supabaseAnonKey !== 'example-key'}`);
 
+// Create the Supabase client with explicit auth configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
+    detectSessionInUrl: true,
+    flowType: 'implicit'
   }
 });
 
@@ -35,6 +38,13 @@ export const isSupabaseConfigured = () => {
     key !== 'example-key'
   );
   
-  console.log(`Supabase configured: ${isConfigured}`);
+  if (isConfigured) {
+    console.log('Supabase is properly configured');
+  } else {
+    console.warn('Supabase is NOT properly configured. Authentication will not work!');
+    console.warn(`URL check: ${url !== 'https://example.supabase.co'}`);
+    console.warn(`Key check: ${key !== 'example-key'}`);
+  }
+  
   return isConfigured;
 };
