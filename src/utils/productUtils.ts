@@ -56,6 +56,35 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 };
 
 /**
+ * Fetches related products based on category, excluding the current product
+ */
+export const getRelatedProducts = async (currentProductId: string, category: string, limit = 4): Promise<Product[]> => {
+  try {
+    // Check if Supabase is configured properly
+    if (!isSupabaseConfigured()) {
+      throw new Error('Supabase is not properly configured. Please check your .env file.');
+    }
+
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('category', category)
+      .neq('id', currentProductId)
+      .limit(limit);
+
+    if (error) {
+      console.error(`Error fetching related products for product ${currentProductId}:`, error);
+      throw new Error(`Failed to fetch related products: ${error.message}`);
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error(`Error in getRelatedProducts for product ${currentProductId}:`, error);
+    throw error;
+  }
+};
+
+/**
  * Fetches products by category
  */
 export const getProductsByCategory = async (category: string): Promise<Product[]> => {
