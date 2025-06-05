@@ -1,5 +1,27 @@
 import 'dotenv/config'; // Load environment variables from .env file
-import { supabase } from '../src/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+// Create a Supabase client with service role key for admin operations
+const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('Error: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required for this script.');
+  console.error('\nPlease make sure your .env file contains these variables.');
+  process.exit(1);
+}
+
+// Log configuration details for debugging
+console.log('Products Addition Script');
+console.log(`Supabase URL: ${supabaseUrl}`);
+console.log(`Service role key provided: ${supabaseServiceKey ? 'Yes' : 'No'}`);
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+});
 
 const sampleProducts = [
   // Power Tools
@@ -217,12 +239,98 @@ const sampleProducts = [
     rating: 4.6,
     reviews: 89,
     stock: 150
+  },
+  
+  // Hand Tools
+  {
+    name: 'Professional Wrench Set',
+    price: 3499,
+    discount: 10,
+    description: 'Complete set of professional-grade wrenches in various sizes for all your mechanical needs.',
+    category: 'Hand Tools',
+    subcategory: 'Wrenches',
+    tags: ['hand tools', 'wrench', 'mechanical', 'set'],
+    images: [
+      'https://images.pexels.com/photos/209235/pexels-photo-209235.jpeg',
+      'https://images.pexels.com/photos/220639/pexels-photo-220639.jpeg'
+    ],
+    specifications: {
+      material: 'Chrome Vanadium Steel',
+      pieces: '15',
+      weight: '2.5kg',
+      warranty: '10 years',
+      manufacturer: 'YariTools',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.8,
+    reviews: 124,
+    stock: 75
+  },
+  {
+    name: 'Precision Screwdriver Kit',
+    price: 1299,
+    discount: 0,
+    description: 'High-precision screwdriver kit for electronics and small appliance repairs.',
+    category: 'Hand Tools',
+    subcategory: 'Screwdrivers',
+    tags: ['hand tools', 'screwdriver', 'precision', 'electronics'],
+    images: [
+      'https://images.pexels.com/photos/214256/pexels-photo-214256.jpeg',
+      'https://images.pexels.com/photos/8005364/pexels-photo-8005364.jpeg'
+    ],
+    specifications: {
+      material: 'S2 Steel Bits',
+      pieces: '48',
+      weight: '450g',
+      warranty: '5 years',
+      manufacturer: 'YariTools',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.7,
+    reviews: 86,
+    stock: 120
+  },
+  
+  // More Power Tools
+  {
+    name: 'Professional Circular Saw',
+    price: 12999,
+    discount: 15,
+    description: 'Heavy-duty circular saw with laser guide and dust collection system for precise cutting.',
+    category: 'Power Tools',
+    subcategory: 'Saws',
+    tags: ['saw', 'circular', 'cutting', 'wood'],
+    images: [
+      'https://images.pexels.com/photos/175039/pexels-photo-175039.jpeg',
+      'https://images.pexels.com/photos/7665526/pexels-photo-7665526.jpeg'
+    ],
+    colors: ['Blue', 'Black'],
+    specifications: {
+      power: '1800W',
+      blade: '185mm',
+      weight: '4.2kg',
+      warranty: '3 years',
+      manufacturer: 'YariTools Pro',
+      countryOfOrigin: 'India'
+    },
+    rating: 4.6,
+    reviews: 78,
+    stock: 45
   }
 ];
 
 const addProducts = async () => {
   try {
     console.log('Starting to add products to Supabase...');
+    
+    // Check if we can connect to Supabase
+    const { error: connectionError } = await supabase.from('products').select('count', { count: 'exact', head: true });
+    if (connectionError) {
+      console.error('Error connecting to Supabase:', connectionError);
+      console.error('Please check your credentials and network connection.');
+      return;
+    }
+    console.log('Successfully connected to Supabase.');
     
     // Insert products in batches to avoid hitting rate limits
     const batchSize = 4;
@@ -232,31 +340,37 @@ const addProducts = async () => {
       batches.push(sampleProducts.slice(i, i + batchSize));
     }
     
-    console.log(`Split into ${batches.length} batches for processing.`);
+    console.log(`Split ${sampleProducts.length} products into ${batches.length} batches for processing.`);
     
     let successCount = 0;
     let errorCount = 0;
     
     for (let i = 0; i < batches.length; i++) {
       const batch = batches[i];
-      console.log(`Processing batch ${i + 1}/${batches.length}...`);
+      console.log(`Processing batch ${i + 1}/${batches.length} (${batch.length} products)...`);
+      
+      // Transform products to match database schema
+      const productsToInsert = batch.map(product => ({
+        ...product,
+        created_at: new Date().toISOString()
+      }));
       
       const { data, error } = await supabase
         .from('products')
-        .insert(batch)
+        .insert(productsToInsert)
         .select();
       
       if (error) {
         console.error(`Error in batch ${i + 1}:`, error);
         errorCount += batch.length;
       } else {
-        console.log(`Successfully processed batch ${i + 1}.`);
-        successCount += batch.length;
+        console.log(`Successfully added batch ${i + 1} (${data?.length || 0} products).`);
+        successCount += data?.length || 0;
       }
       
       // Add a small delay between batches to avoid rate limiting
       if (i < batches.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
     
@@ -274,9 +388,23 @@ const addProducts = async () => {
   } catch (error) {
     console.error('Process failed with error:', error);
   } finally {
-    // Close the Supabase client connection
+    console.log('Closing Supabase connection...');
     await supabase.auth.signOut();
+    console.log('Done!');
   }
 };
 
-addProducts().catch(console.error);
+// Check if this script is being run directly
+if (import.meta.url === import.meta.env?.VITE_ENTRY_MODULE_URL) {
+  console.log('Running product addition script...');
+  addProducts()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error('Fatal error:', err);
+      process.exit(1);
+    });
+} else {
+  console.log('Exporting addProducts function');
+}
+
+export { addProducts };
