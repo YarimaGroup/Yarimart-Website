@@ -55,7 +55,7 @@ const setupAdmins = async () => {
     for (const admin of ADMIN_USERS) {
       console.log(`Processing admin user: ${admin.email}`);
       
-      // First check if user already exists
+      // Check if user already exists
       const { data: users, error: lookupError } = await supabase.auth.admin.listUsers();
       
       if (lookupError) {
@@ -80,6 +80,8 @@ const setupAdmins = async () => {
           console.error(`Error updating password for ${admin.email}:`, updateError);
           continue;
         }
+        
+        console.log(`Password updated for ${admin.email}`);
       } else {
         console.log(`Creating new admin user: ${admin.email}`);
         

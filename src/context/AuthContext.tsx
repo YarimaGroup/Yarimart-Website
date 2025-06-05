@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (session?.user) {
           const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
           setIsAdmin(userIsAdmin);
+          console.log("User authenticated, admin status:", userIsAdmin);
         } else {
           setIsAdmin(false);
         }
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (session?.user) {
           const userIsAdmin = ADMIN_EMAILS.includes(session.user.email || '');
           setIsAdmin(userIsAdmin);
+          console.log("Auth state changed, admin status:", userIsAdmin);
         } else {
           setIsAdmin(false);
         }
@@ -93,11 +95,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       throw new Error('Authentication service is not available');
     }
     
-    const { error } = await supabase.auth.signInWithPassword({
+    console.log(`Attempting to sign in: ${email}`);
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) throw error;
+    
+    if (error) {
+      console.error("Sign in error:", error.message);
+      throw error;
+    }
+    
+    console.log("Sign in successful:", data.user?.email);
+    
+    // Check if user is admin
+    const userIsAdmin = ADMIN_EMAILS.includes(email);
+    setIsAdmin(userIsAdmin);
   };
 
   const signOut = async () => {
